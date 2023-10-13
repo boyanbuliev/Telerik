@@ -8,7 +8,6 @@ public class PrimeNumbers {
         int n = Integer.parseInt(scanner.nextLine());
         List<Integer> primeNums = new ArrayList<>();
 
-
         for (int i = 1; i <= n; i++) {
             boolean isPrime = true;
             for (int j = 2; j < i; j++) {
