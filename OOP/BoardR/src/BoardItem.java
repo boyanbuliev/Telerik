@@ -58,7 +58,7 @@ public class BoardItem {
 
     public void revertStatus() {
         try {
-            this.status = status.previous();
+            status = status.previous();
             addPropertyLog("Status", status.next(), status);
         } catch (ArrayIndexOutOfBoundsException e) {
             addLogEntry(String.format("Can't revert, already at %s", status));
@@ -67,7 +67,7 @@ public class BoardItem {
 
     public void advanceStatus() {
         try {
-            this.status = status.next();
+            status = status.next();
             addPropertyLog("Status", status.previous(), status);
         } catch (ArrayIndexOutOfBoundsException e) {
             addLogEntry(String.format("Can't advance, already at %s", status));

@@ -1,7 +1,12 @@
 enum Status {
-    OPEN, TODO, IN_PROGRESS, DONE, VERIFIED;
+    OPEN("Open"), TODO("To Do"), IN_PROGRESS("In Progress"), DONE("Done"), VERIFIED("Verified");
 
     private static final Status[] values = values();
+    public final String name;
+
+    Status(String name) {
+        this.name = name;
+    }
 
     public Status next() {
         return values[(this.ordinal() + 1)];
@@ -13,18 +18,12 @@ enum Status {
 
     @Override
     public String toString() {
-        switch (this) {
-            case OPEN:
-                return "Open";
-            case TODO:
-                return "To Do";
-            case IN_PROGRESS:
-                return "In Progress";
-            case DONE:
-                return "Done";
-            case VERIFIED:
-                return "Verified";
-        }
-        return "UNKNOWN";
+        return switch (this) {
+            case OPEN -> OPEN.name;
+            case TODO -> TODO.name;
+            case IN_PROGRESS -> IN_PROGRESS.name;
+            case DONE -> DONE.name;
+            case VERIFIED -> VERIFIED.name;
+        };
     }
 }
