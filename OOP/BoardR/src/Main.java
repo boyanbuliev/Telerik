@@ -2,12 +2,14 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        BoardItem item = new BoardItem("Rewrite everything", LocalDate.now().plusDays(2));
+        BoardItem item1 = new BoardItem("Implement login/logout", LocalDate.now().plusDays(3));
+        BoardItem item2 = new BoardItem("Secure admin endpoints", LocalDate.now().plusDays(5));
 
-        item.setTitle("Rewrite everything ASAP!!!"); // properly changing the title
-        System.out.println(item.getTitle()); // properly accessing the title
-        item.setTitle("Huh?"); // Exception thrown: Please provide a title with length between 5 and 30 chars
+        Board board = new Board();
 
+        board.addItem(item1);
+        board.addItem(item2);
+        board.addItem(item1);
 
     }
 }

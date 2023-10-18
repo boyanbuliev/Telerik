@@ -2,18 +2,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    List<BoardItem> items;
+    private List<BoardItem> items;
 
     public Board() {
         this.items = new ArrayList<>();
     }
 
-    public List<BoardItem> getItems() {
-        return this.items;
+    public void addItem(BoardItem item) {
+        if (!items.contains(item)) {
+            items.add(item);
+        } else {
+            throw new IllegalArgumentException("Item already in the list");
+        }
     }
 
-    public Board setItems(List<BoardItem> items) {
-        this.items = items;
-        return this;
+    public int totalItems() {
+        return items.size();
     }
 }
