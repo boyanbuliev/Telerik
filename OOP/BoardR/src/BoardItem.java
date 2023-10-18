@@ -9,9 +9,9 @@ public class BoardItem {
     private List<EventLog> log;
 
     public BoardItem(String title, LocalDate dueDate) {
-        setTitle(title);
-        setDueDate(dueDate);
-        this.status = Status.Open;
+            setTitle(title);
+            setDueDate(dueDate);
+        this.status = Status.OPEN;
         addLogEntry(String.format("Item created: %s [%s | %s]", this.title, this.status, this.dueDate));
     }
 
