@@ -44,8 +44,7 @@ public class Category {
         sb.append(String.format("#Category: %s%n", name));
         if (!products.isEmpty()) {
             for (Product product : products) {
-                sb.append(String.format(" #%s %s%n #Price: $%.2f%n #Gender: %s%n===",
-                        product.getName(), product.getBrand(), product.getPrice(), product.getGender()));
+                sb.append(product.print()).append("===");
             }
         } else {
             sb.append(" #No product in this category");
