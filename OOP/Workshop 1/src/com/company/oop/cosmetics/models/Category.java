@@ -9,7 +9,7 @@ public class Category {
     public static final int NAME_MAX_LENGTH = 15;
 
     private String name;
-    private ArrayList<Product> products;
+    private final ArrayList<Product> products;
 
     public Category(String name) {
         setName(name);
