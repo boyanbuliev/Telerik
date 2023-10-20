@@ -26,7 +26,7 @@ public class Category {
     }
 
     public ArrayList<Product> getProducts() {
-        return products;
+        return new ArrayList<>(products);
     }
 
     public void addProduct(Product product) {
