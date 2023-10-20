@@ -10,7 +10,8 @@ public class Product {
     public static final int NAME_MAX_LENGTH = 10;
     public static final int BRAND_MIN_LENGTH = 2;
     public static final int BRAND_MAX_LENGTH = 10;
-
+    public static final String INVALID_PRICE_MESSAGE = "Price should be non negative.";
+    public static final String INVALID_LENGTH_ERROR = "%s should be between %d and %d symbols.";
     private String name;
     private String brand;
     private double price;
@@ -26,18 +27,18 @@ public class Product {
 
     public void setPrice(double price) {
         if (price < 0) {
-            throw new IllegalArgumentException("Price should be non negative.");
+            throw new IllegalArgumentException(INVALID_PRICE_MESSAGE);
         }
         this.price = price;
     }
 
     public void setName(String name) {
-        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Name should be between 3 and 10 symbols.");
+        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, String.format(INVALID_LENGTH_ERROR, "Name", NAME_MIN_LENGTH, NAME_MAX_LENGTH));
         this.name = name;
     }
 
     public void setBrand(String brand) {
-        ValidationHelpers.validateStringLength(brand, BRAND_MIN_LENGTH, BRAND_MAX_LENGTH, "Brand should be between 2 and 10 symbols.");
+        ValidationHelpers.validateStringLength(brand, BRAND_MIN_LENGTH, BRAND_MAX_LENGTH, String.format(INVALID_LENGTH_ERROR, "Brand", BRAND_MIN_LENGTH, BRAND_MAX_LENGTH));
         this.brand = brand;
     }
 

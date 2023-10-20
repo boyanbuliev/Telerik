@@ -21,7 +21,8 @@ public class Category {
     }
 
     public void setName(String name) {
-        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Name should be between 2 and 15 symbols.");
+        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH,
+                String.format(Product.INVALID_LENGTH_ERROR, "Name", NAME_MIN_LENGTH, NAME_MAX_LENGTH));
         this.name = name;
     }
 
