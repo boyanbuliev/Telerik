@@ -1,7 +1,6 @@
 package com.company.oop.cosmetics.models;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class ShoppingCart {
 
@@ -29,7 +28,7 @@ public class ShoppingCart {
     }
 
     public double totalPrice() {
-        return products.stream().map(Product::getPrice).mapToDouble(Double::doubleValue).sum();
+        return products.stream().mapToDouble(Product::getPrice).sum();
     }
 
 }
