@@ -13,11 +13,11 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
     private final ArrayList<Product> products;
     private final ArrayList<Category> categories;
     private final ShoppingCart shoppingCart;
+    public static final String DOES_NOT_EXIST = "%s %s does not exist!";
 
     public CosmeticsRepositoryImpl() {
         products = new ArrayList<>();
         categories = new ArrayList<>();
-
         shoppingCart = new ShoppingCart();
     }
 
@@ -43,7 +43,7 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
          *       If not, "throw new IllegalArgumentException("Product %s does not exist!");"
          */
         return products.stream().filter(p -> productName.equals(p.getName())).findAny()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Product %s does not exist!", productName)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format(DOES_NOT_EXIST, "Product", productName)));
 
         /** eto i sku4niq variant**/
 //        for (Product product : products) {
@@ -61,7 +61,7 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
          *       If not, "throw new IllegalArgumentException("Category %s does not exist!");"
          */
         return categories.stream().filter(c -> categoryName.equals(c.getName()))
-                .findAny().orElseThrow(() -> new IllegalArgumentException(String.format("Category %s does not exist!", categoryName)));
+                .findAny().orElseThrow(() -> new IllegalArgumentException(String.format(DOES_NOT_EXIST, "Category", categoryName)));
 //        for (Category category : categories) {
 //            if (category.getName().equals(categoryName)) {
 //                return category;
