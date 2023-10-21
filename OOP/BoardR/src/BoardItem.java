@@ -9,11 +9,19 @@ public class BoardItem {
     private List<EventLog> log;
 
     public BoardItem(String title, LocalDate dueDate) {
-            setTitle(title);
-            setDueDate(dueDate);
+        setTitle(title);
+        setDueDate(dueDate);
         this.status = Status.OPEN;
         addLogEntry(String.format("Item created: %s [%s | %s]", this.title, this.status, this.dueDate));
     }
+
+    public BoardItem(String title, LocalDate dueDate, Status status) {
+        setTitle(title);
+        setDueDate(dueDate);
+        this.status = status;
+        addLogEntry(String.format("Item created: %s [%s | %s]", this.title, this.status, this.dueDate));
+    }
+
 
     public String getTitle() {
         return title;
@@ -49,7 +57,7 @@ public class BoardItem {
         return status;
     }
 
-    private void addLogEntry(String message) {
+    protected void addLogEntry(String message) {
         if (log == null) {
             log = new ArrayList<>();
         }
