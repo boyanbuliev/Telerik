@@ -21,5 +21,9 @@ public class Task extends BoardItem {
         this.assignee = assignee;
     }
 
-
+    @Override
+    public String viewInfo() {
+        return String.format("Task: %s, Assignee: %s", super.viewInfo(), getAssignee());
+    }
 }
+

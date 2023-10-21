@@ -1,16 +1,16 @@
+import loggers.ConsoleLogger;
+
 import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        Task task = new Task("Write unit tests", "Pesho", LocalDate.now().plusDays(1));
-        Issue issue = new Issue("Review tests", "Someone must review Pesho's tests.", LocalDate.now().plusDays(1));
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
 
-        Board board = new Board();
+        BoardItem task = new Task("Write unit tests", "Pesho", tomorrow);
+        BoardItem issue = new Issue("Review tests", "Someone must review Pesho's tests.", tomorrow);
 
-        board.addItem(task);  // treating type Task as type BoardItem
-        board.addItem(issue); // treating type Issue as type BoardItem
-
-        board.displayHistory();
+        System.out.println(task.viewInfo());
+        System.out.println(issue.viewInfo());
     }
 }
 

@@ -16,4 +16,8 @@ public class Issue extends BoardItem {
         return description;
     }
 
+    @Override
+    public String viewInfo() {
+        return String.format("Issue: %s, Description: %s", super.viewInfo(), getDescription());
+    }
 }

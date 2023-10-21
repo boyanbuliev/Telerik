@@ -1,3 +1,5 @@
+import loggers.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class Board {
         return items.size();
     }
 
-    public void displayHistory() {
-        items.forEach(i-> System.out.println(i.getHistory()));
+    public void displayHistory(Logger logger) {
+        items.forEach(i -> logger.log(i.getHistory()));
     }
 }
