@@ -19,4 +19,8 @@ public class Board {
     public int totalItems() {
         return items.size();
     }
+
+    public void displayHistory() {
+        items.forEach(i-> System.out.println(i.getHistory()));
+    }
 }

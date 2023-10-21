@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BoardItem {
     private String title;
@@ -92,5 +93,9 @@ public class BoardItem {
 
     public void displayHistory() {
         log.forEach(e -> System.out.println(e.viewInfo()));
+    }
+
+    public String getHistory() {
+        return log.stream().map(EventLog::viewInfo).collect(Collectors.joining("%n"));
     }
 }
