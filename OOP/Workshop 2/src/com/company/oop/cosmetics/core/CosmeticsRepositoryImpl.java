@@ -46,7 +46,8 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
 
     @Override
     public Product findProductByName(String productName) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return products.stream().filter(p -> p.getName().equals(productName)).findAny()
+                .orElseThrow(() -> new IllegalArgumentException(String.format(PRODUCT_DOES_NOT_EXIST, productName)));
     }
 
     @Override
@@ -70,12 +71,16 @@ public class CosmeticsRepositoryImpl implements CosmeticsRepository {
     @Override
     public ShampooImpl createShampoo(String name, String brandName, double price, GenderType genderType,
                                      int millilitres, UsageType usageType) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        ShampooImpl shampoo = new ShampooImpl(name, brandName, price, genderType, millilitres, usageType);
+        products.add(shampoo);
+        return shampoo;
     }
 
     @Override
     public ToothpasteImpl createToothpaste(String name, String brandName, double price, GenderType genderType, List<String> ingredients) {
-        throw new UnsupportedOperationException("Not implemented yet.");
+        ToothpasteImpl toothpaste = new ToothpasteImpl(name, brandName, price, genderType, ingredients);
+        products.add(toothpaste);
+        return toothpaste;
     }
 
     @Override
