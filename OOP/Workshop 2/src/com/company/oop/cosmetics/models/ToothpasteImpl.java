@@ -4,6 +4,7 @@ import com.company.oop.cosmetics.models.contracts.Toothpaste;
 import com.company.oop.cosmetics.models.enums.GenderType;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToothpasteImpl extends ProductImpl implements Toothpaste {
@@ -32,7 +33,7 @@ public class ToothpasteImpl extends ProductImpl implements Toothpaste {
 
     @Override
     public List<String> getIngredients() {
-        return ingredients;
+        return new ArrayList<>(ingredients);
     }
 
     public void setIngredients(List<String> ingredients) {
