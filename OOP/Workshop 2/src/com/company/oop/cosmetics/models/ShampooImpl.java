@@ -31,8 +31,8 @@ public class ShampooImpl extends ProductImpl implements Shampoo {
     public void setBrandName(String brandName) {
         ValidationHelpers.validateStringLength(brandName, BRAND_NAME_MIN_LENGTH, BRAND_NAME_MAX_LENGTH, "Brand");
         super.setBrandName(brandName);
-
     }
+
     public int getMillilitres() {
         return millilitres;
     }
