@@ -1,8 +1,6 @@
 package com.company.oop.cosmetics;
 
 import com.company.oop.cosmetics.core.CosmeticsEngineImpl;
-import com.company.oop.cosmetics.models.contracts.Product;
-import com.company.oop.cosmetics.models.contracts.Shampoo;
 
 public class Startup {
 

@@ -42,6 +42,6 @@ public class CreamImpl extends ProductImpl implements Cream {
 
     @Override
     public String print() {
-        return String.format("%s #Scent: %s", super.print(), scent);
+        return String.format("%s #Scent: %s%n", super.print(), scent);
     }
 }

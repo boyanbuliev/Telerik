@@ -31,6 +31,8 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new CreateShampooCommand(repository);
             case CREATETOOTHPASTE:
                 return new CreateToothpasteCommand(repository);
+            case CREATECREAM:
+                return new CreateCreamCommand(repository);
             default:
                 throw new IllegalArgumentException(String.format(INVALID_COMMAND, commandName));
         }
