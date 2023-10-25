@@ -1,11 +1,12 @@
 package com.company.oop.cosmetics.models;
 
+import com.company.oop.cosmetics.models.contracts.Shampoo;
 import com.company.oop.cosmetics.models.enums.GenderType;
 import com.company.oop.cosmetics.models.enums.UsageType;
 import com.company.oop.cosmetics.utils.MagicStrings;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 
-public class ShampooImpl {
+public class ShampooImpl implements Shampoo {
 
     public static final int NAME_MIN_LENGTH = 3;
     public static final int NAME_MAX_LENGTH = 10;
