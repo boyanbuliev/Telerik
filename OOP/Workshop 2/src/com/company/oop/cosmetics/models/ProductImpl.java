@@ -9,13 +9,14 @@ public abstract class ProductImpl implements Product {
     private double price;
     private GenderType genderType;
 
-    public ProductImpl(String name, String brandName, double price, GenderType genderType) {
+    protected ProductImpl(String name, String brandName, double price, GenderType genderType) {
         setName(name);
         setBrandName(brandName);
         setPrice(price);
         setGenderType(genderType);
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -24,6 +25,7 @@ public abstract class ProductImpl implements Product {
         this.name = name;
     }
 
+    @Override
     public String getBrandName() {
         return brandName;
     }
@@ -44,6 +46,7 @@ public abstract class ProductImpl implements Product {
         this.price = price;
     }
 
+    @Override
     public GenderType getGenderType() {
         return genderType;
     }
@@ -52,7 +55,7 @@ public abstract class ProductImpl implements Product {
         this.genderType = genderType;
     }
 
-
+    @Override
     public String print() {
         return String.format("#%s %s%n #Price: $%.2f%n #Gender: %s%n", getName(), getBrandName(), getPrice(), getGenderType());
     }
