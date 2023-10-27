@@ -9,26 +9,11 @@ import java.util.List;
 
 public class ToothpasteImpl extends ProductImpl implements Toothpaste {
 
-    public static final int NAME_MIN_LENGTH = 3;
-    public static final int NAME_MAX_LENGTH = 10;
-    public static final int BRAND_NAME_MIN_LENGTH = 2;
-    public static final int BRAND_NAME_MAX_LENGTH = 10;
-
     private List<String> ingredients;
 
     public ToothpasteImpl(String name, String brandName, double price, GenderType genderType, List<String> ingredients) {
         super(name, brandName, price, genderType);
         setIngredients(ingredients);
-    }
-
-    public void setName(String name) {
-        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Name");
-        super.setName(name);
-    }
-
-    public void setBrandName(String brandName) {
-        ValidationHelpers.validateStringLength(brandName, BRAND_NAME_MIN_LENGTH, BRAND_NAME_MAX_LENGTH, "Brand");
-        super.setBrandName(brandName);
     }
 
     @Override
@@ -37,7 +22,7 @@ public class ToothpasteImpl extends ProductImpl implements Toothpaste {
     }
 
     public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
+        this.ingredients = new ArrayList<>(ingredients);
     }
 
     @Override

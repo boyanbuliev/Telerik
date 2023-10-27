@@ -6,6 +6,7 @@ public class ValidationHelpers {
 
     private static final String STRING_LENGTH_ERROR = "%s should be between %d and %d symbols.";
     private static final String INVALID_NUMBER_OF_ARGUMENTS = "Invalid number of arguments. Expected: %d; received: %d.";
+    private static final String INVALID_MINIMUM_VALUE = "%s should be non negative.";
 
     public static void validateIntRange(int minLength, int maxLength, int actualLength, String type) {
         if (actualLength < minLength || actualLength > maxLength) {
@@ -24,4 +25,9 @@ public class ValidationHelpers {
         }
     }
 
+    public static void validateMinimumValue(double value, double minimum, String type) {
+        if (value < minimum) {
+            throw new IllegalArgumentException(String.format(INVALID_MINIMUM_VALUE, type));
+        }
+    }
 }

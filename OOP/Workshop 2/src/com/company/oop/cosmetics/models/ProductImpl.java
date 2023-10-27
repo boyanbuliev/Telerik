@@ -2,8 +2,15 @@ package com.company.oop.cosmetics.models;
 
 import com.company.oop.cosmetics.models.contracts.Product;
 import com.company.oop.cosmetics.models.enums.GenderType;
+import com.company.oop.cosmetics.utils.ValidationHelpers;
 
 public abstract class ProductImpl implements Product {
+
+    public static final int NAME_MIN_LENGTH = 3;
+    public static final int NAME_MAX_LENGTH = 10;
+    public static final int BRAND_NAME_MIN_LENGTH = 2;
+    public static final int BRAND_NAME_MAX_LENGTH = 10;
+
     private String name;
     private String brandName;
     private double price;
@@ -22,6 +29,7 @@ public abstract class ProductImpl implements Product {
     }
 
     public void setName(String name) {
+        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Name");
         this.name = name;
     }
 
@@ -30,7 +38,8 @@ public abstract class ProductImpl implements Product {
         return brandName;
     }
 
-    public void setBrandName(String brandName) {
+    private void setBrandName(String brandName) {
+        ValidationHelpers.validateStringLength(brandName, BRAND_NAME_MIN_LENGTH, BRAND_NAME_MAX_LENGTH, "Brand");
         this.brandName = brandName;
     }
 
@@ -39,10 +48,8 @@ public abstract class ProductImpl implements Product {
         return price;
     }
 
-    public void setPrice(double price) {
-        if (price < 0) {
-            throw new IllegalArgumentException("Price should be non negative.");
-        }
+    private void setPrice(double price) {
+        ValidationHelpers.validateMinimumValue(price,0,"Price");
         this.price = price;
     }
 
@@ -51,7 +58,7 @@ public abstract class ProductImpl implements Product {
         return genderType;
     }
 
-    public void setGenderType(GenderType genderType) {
+    private void setGenderType(GenderType genderType) {
         this.genderType = genderType;
     }
 
