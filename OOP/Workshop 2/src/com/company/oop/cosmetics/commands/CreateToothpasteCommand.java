@@ -6,6 +6,7 @@ import com.company.oop.cosmetics.models.enums.GenderType;
 import com.company.oop.cosmetics.utils.ParsingHelpers;
 import com.company.oop.cosmetics.utils.ValidationHelpers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
