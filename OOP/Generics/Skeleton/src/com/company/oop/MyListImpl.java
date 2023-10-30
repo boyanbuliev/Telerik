@@ -131,20 +131,20 @@ public class MyListImpl<T> implements MyList<T> {
     }
 
     private class ArrIterator implements Iterator<T> {
-        private int currentIndex;
+        private int index;
 
         public ArrIterator() {
-            currentIndex = 0;
+            index = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return currentIndex < size;
+            return index < size;
         }
 
         @Override
         public T next() {
-            return data[currentIndex++];
+            return data[index++];
         }
     }
 
@@ -157,6 +157,41 @@ public class MyListImpl<T> implements MyList<T> {
 
     @Override
     public Spliterator<T> spliterator() {
-        return null;
+        return new ArrSpliterator();
+    }
+
+    private class ArrSpliterator implements Spliterator<T> {
+        private int index;
+        private final int fence;
+
+        public ArrSpliterator() {
+            index = 0;
+            fence = size;
+        }
+
+        @Override
+        public boolean tryAdvance(Consumer<? super T> action) {
+            if (index < fence) {
+                action.accept(data[index++]);
+                return true;
+            }
+            return false;
+        }
+
+
+        @Override
+        public Spliterator<T> trySplit() {
+            return null;
+        }
+
+        @Override
+        public long estimateSize() {
+            return 0;
+        }
+
+        @Override
+        public int characteristics() {
+            return Spliterator.ORDERED;
+        }
     }
 }
