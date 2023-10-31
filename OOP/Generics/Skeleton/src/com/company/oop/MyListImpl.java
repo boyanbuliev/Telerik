@@ -168,13 +168,13 @@ public class MyListImpl<T> implements MyList<T> {
         public ArrSpliterator(MyList<T> elements) {
             this.elements = elements;
             index = 0;
-            fence = size;
+            fence = elements.size();
         }
 
         @Override
         public boolean tryAdvance(Consumer<? super T> action) {
             if (index < fence) {
-                action.accept(data[index++]);
+                action.accept(elements.get(index++));
                 return true;
             }
             return false;

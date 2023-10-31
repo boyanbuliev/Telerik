@@ -1,5 +1,7 @@
 package com.company.oop;
 
+import java.util.Spliterator;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -11,7 +13,8 @@ public class Main {
         list.add("Mouse");
         list.add("Cat");
 
-        System.out.println(list.spliterator().characteristics());
+        Spliterator<String> spliterator = list.spliterator().trySplit();
+        spliterator.forEachRemaining(System.out::println);
     }
 
 }
