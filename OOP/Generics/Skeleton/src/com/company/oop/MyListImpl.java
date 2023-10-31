@@ -157,14 +157,16 @@ public class MyListImpl<T> implements MyList<T> {
 
     @Override
     public Spliterator<T> spliterator() {
-        return new ArrSpliterator();
+        return new ArrSpliterator(this);
     }
 
     private class ArrSpliterator implements Spliterator<T> {
+        private final MyList<T> elements;
         private int index;
         private final int fence;
 
-        public ArrSpliterator() {
+        public ArrSpliterator(MyList<T> elements) {
+            this.elements = elements;
             index = 0;
             fence = size;
         }
@@ -181,17 +183,28 @@ public class MyListImpl<T> implements MyList<T> {
 
         @Override
         public Spliterator<T> trySplit() {
-            return null;
+            int currentSize = size - index;
+            if (currentSize < 2) {
+                return null;
+            }
+            int splitIndex = index + size / 2;
+            MyList<T> tempArr = new MyListImpl<>();
+            for (int i = 0; i < splitIndex; i++) {
+                tempArr.add(elements.get(i));
+            }
+            ArrSpliterator newSpliterator = new ArrSpliterator(tempArr);
+            index = splitIndex;
+            return newSpliterator;
         }
 
         @Override
         public long estimateSize() {
-            return 0;
+            return size - index;
         }
 
         @Override
         public int characteristics() {
-            return Spliterator.ORDERED;
+            return Spliterator.ORDERED | Spliterator.SIZED | Spliterator.SUBSIZED;
         }
     }
 }
