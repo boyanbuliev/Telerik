@@ -1,13 +1,16 @@
 package com.company.oop.cosmetics.commands;
 
-import com.company.oop.cosmetics.core.contracts.ProductRepository;
 import com.company.oop.cosmetics.commands.contracts.Command;
+import com.company.oop.cosmetics.core.contracts.ProductRepository;
+import com.company.oop.cosmetics.utils.ValidationHelpers;
+import com.company.oop.cosmetics.utils.exceptions.ItemAlreadyExistsException;
 
 import java.util.List;
 
 public class CreateCategoryCommand implements Command {
 
     private static final String CATEGORY_CREATED = "Category with name %s was created!";
+    private static final String CATEGORY_ALREADY_EXISTS = "Category %s already exist.";
 
     private final ProductRepository productRepository;
 
@@ -17,7 +20,7 @@ public class CreateCategoryCommand implements Command {
 
     @Override
     public String execute(List<String> parameters) {
-        //TODO Validate parameters count
+        ValidationHelpers.validateArgumentsCount(parameters, 1, "CreateCategory");
 
         String categoryName = parameters.get(0);
 
@@ -25,8 +28,9 @@ public class CreateCategoryCommand implements Command {
     }
 
     private String createCategory(String categoryName) {
-        //TODO Ensure category name is unique
-
+        if (productRepository.categoryExist(categoryName)) {
+            throw new ItemAlreadyExistsException(String.format(CATEGORY_ALREADY_EXISTS, categoryName));
+        }
         productRepository.createCategory(categoryName);
 
         return String.format(CATEGORY_CREATED, categoryName);

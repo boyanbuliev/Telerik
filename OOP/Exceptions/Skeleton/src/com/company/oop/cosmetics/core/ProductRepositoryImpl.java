@@ -15,8 +15,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private static final String PRODUCT_DOES_NOT_EXIST = "Product %s does not exist!";
     private static final String CATEGORY_DOES_NOT_EXIST = "Category %s does not exist!";
-    private static final String CATEGORY_ALREADY_EXISTS = "Category %s already exist.";
-    private static final String PRODUCT_ALREADY_EXISTS = "Product %s already exist.";
 
     private final List<Product> products;
     private final List<Category> categories;
@@ -55,17 +53,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void createCategory(String categoryName) {
-        if (categoryExist(categoryName)) {
-            throw new ItemAlreadyExistsException(String.format(CATEGORY_ALREADY_EXISTS, categoryName));
-        }
         this.categories.add(new CategoryImpl(categoryName));
     }
 
     @Override
     public void createProduct(String name, String brand, double price, GenderType gender) {
-        if (productExist(name)) {
-            throw new ItemAlreadyExistsException(String.format(PRODUCT_ALREADY_EXISTS, name));
-        }
         this.products.add(new ProductImpl(name, brand, price, gender));
     }
 
