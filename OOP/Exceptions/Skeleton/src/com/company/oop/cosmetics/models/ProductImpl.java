@@ -1,8 +1,13 @@
 package com.company.oop.cosmetics.models;
 
 import com.company.oop.cosmetics.models.contracts.Product;
+import com.company.oop.cosmetics.utils.ValidationHelpers;
 
 public class ProductImpl implements Product {
+    private final int NAME_MIN_LENGTH = 3;
+    private final int NAME_MAX_LENGTH = 10;
+    private final int BRAND_MIN_LENGTH = 2;
+    private final int BRAND_MAX_LENGTH = 10;
 
     private String name;
     private String brand;
@@ -21,7 +26,7 @@ public class ProductImpl implements Product {
     }
 
     private void setName(String name) {
-        //TODO Validate name
+        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Product");
         this.name = name;
     }
 
@@ -30,7 +35,7 @@ public class ProductImpl implements Product {
     }
 
     private void setBrand(String brand) {
-        //TODO Validate brand
+        ValidationHelpers.validateStringLength(brand, BRAND_MIN_LENGTH, BRAND_MAX_LENGTH, "Brand");
         this.brand = brand;
     }
 
@@ -39,7 +44,7 @@ public class ProductImpl implements Product {
     }
 
     private void setPrice(double price) {
-        //TODO Validate price
+        ValidationHelpers.validateNumberIsNonNegative(price, 0);
         this.price = price;
     }
 

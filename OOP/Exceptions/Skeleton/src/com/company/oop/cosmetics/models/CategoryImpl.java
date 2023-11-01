@@ -1,12 +1,15 @@
 package com.company.oop.cosmetics.models;
 
-import com.company.oop.cosmetics.models.contracts.Product;
 import com.company.oop.cosmetics.models.contracts.Category;
+import com.company.oop.cosmetics.models.contracts.Product;
+import com.company.oop.cosmetics.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryImpl implements Category {
+    private final int NAME_MIN_LENGTH = 3;
+    private final int NAME_MAX_LENGTH = 10;
 
     private String name;
     private final List<Product> products;
@@ -21,7 +24,7 @@ public class CategoryImpl implements Category {
     }
 
     private void setName(String name) {
-        //TODO Validate name
+        ValidationHelpers.validateStringLength(name, NAME_MIN_LENGTH, NAME_MAX_LENGTH, "Category");
         this.name = name;
     }
 

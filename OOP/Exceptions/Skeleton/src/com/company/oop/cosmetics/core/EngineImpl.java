@@ -1,9 +1,9 @@
 package com.company.oop.cosmetics.core;
 
+import com.company.oop.cosmetics.commands.contracts.Command;
 import com.company.oop.cosmetics.core.contracts.CommandFactory;
 import com.company.oop.cosmetics.core.contracts.Engine;
 import com.company.oop.cosmetics.core.contracts.ProductRepository;
-import com.company.oop.cosmetics.commands.contracts.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,19 @@ public final class EngineImpl implements Engine {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            String inputLine = scanner.nextLine();
-            if (inputLine.isBlank()) {
-                System.out.println(EMPTY_COMMAND_ERROR);
-                continue;
+            try {
+                String inputLine = scanner.nextLine();
+                if (inputLine.isBlank()) {
+                    System.out.println(EMPTY_COMMAND_ERROR);
+                    continue;
+                }
+                if (inputLine.equalsIgnoreCase(TERMINATION_COMMAND)) {
+                    break;
+                }
+                processCommand(inputLine);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            if (inputLine.equalsIgnoreCase(TERMINATION_COMMAND)) {
-                break;
-            }
-            processCommand(inputLine);
         }
     }
 
