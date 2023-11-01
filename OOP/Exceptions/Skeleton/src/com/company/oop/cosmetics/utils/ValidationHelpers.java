@@ -37,6 +37,7 @@ public class ValidationHelpers {
     public static void validateCommandFormat(String command) {
         Arrays.stream(CommandType.values()).filter(e -> e.toString().equals(command.toUpperCase())).findAny()
                 .orElseThrow(() -> new InvalidCommandException(String.format(NOT_SUPPORTED_COMMAND, command)));
+
     }
 
 }
