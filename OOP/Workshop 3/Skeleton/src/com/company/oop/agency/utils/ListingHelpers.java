@@ -11,18 +11,6 @@ import java.util.stream.Collectors;
 
 public class ListingHelpers {
 
-    public static String ticketsToString(List<Ticket> tickets) {
-        return elementsToString(tickets);
-    }
-
-    public static String vehiclesToString(List<Vehicle> vehicles) {
-        return elementsToString(vehicles);
-    }
-
-    public static String journeysToString(List<Journey> journeys) {
-        return elementsToString(journeys);
-    }
-
     public static <T extends Printable> String elementsToString(List<T> elements) {
         return elements.stream().map(Printable::getAsString)
                 .collect(Collectors.joining(CommandsConstants.JOIN_DELIMITER + System.lineSeparator())).trim();

@@ -20,7 +20,7 @@ public class ListTicketsCommand implements Command {
             return "There are no registered tickets.";
         }
 
-        return ListingHelpers.ticketsToString(tickets);
+        return ListingHelpers.elementsToString(tickets);
     }
 
 }

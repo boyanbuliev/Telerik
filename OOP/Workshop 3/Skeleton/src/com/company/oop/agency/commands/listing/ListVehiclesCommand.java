@@ -20,6 +20,6 @@ public class ListVehiclesCommand implements Command {
         if (vehicles.isEmpty()) {
             return "There are no registered vehicles.";
         }
-        return ListingHelpers.vehiclesToString(vehicles);
+        return ListingHelpers.elementsToString(vehicles);
     }
 }

@@ -20,7 +20,7 @@ public class ListJourneysCommand implements Command {
             return "There are no registered journeys.";
         }
 
-        return ListingHelpers.journeysToString(journeys);
+        return ListingHelpers.elementsToString(journeys);
     }
 
 }
