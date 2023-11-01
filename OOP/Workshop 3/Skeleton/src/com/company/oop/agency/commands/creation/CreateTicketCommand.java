@@ -11,7 +11,6 @@ import com.company.oop.agency.utils.ValidationHelper;
 import java.util.List;
 
 public class CreateTicketCommand implements Command {
-    // TODO: 1.11.2023 г.  
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
 
     private final AgencyRepository repository;
