@@ -35,6 +35,6 @@ public class TrainImpl extends VehicleImpl implements Train {
 
     @Override
     public String getAsString() {
-        return String.format("%s%sCarts amount: %d%n", "Train", super.getAsString(), carts);
+        return String.format("Train%sCarts amount: %d%n", super.getAsString(), carts);
     }
 }

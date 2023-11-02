@@ -20,6 +20,6 @@ public class BusImpl extends VehicleImpl implements Bus {
 
     @Override
     public String getAsString() {
-        return String.format("%s%s", "Bus", super.getAsString());
+        return String.format("Bus%s", super.getAsString());
     }
 }
