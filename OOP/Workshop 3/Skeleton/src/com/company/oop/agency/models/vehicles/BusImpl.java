@@ -14,8 +14,8 @@ public class BusImpl extends VehicleImpl implements Bus {
     }
 
     @Override
-    protected void validatePassengerCapacity(double passengerCapacity) {
-        super.checkValueInRange(passengerCapacity,PASSENGER_MIN_VALUE,PASSENGER_MAX_VALUE, INCORRECT_PASSENGERS_COUNT);
+    public void validatePassengerCapacity(double passengerCapacity) {
+        super.checkValueInRange(passengerCapacity, PASSENGER_MIN_VALUE, PASSENGER_MAX_VALUE, INCORRECT_PASSENGERS_COUNT);
     }
 
     @Override

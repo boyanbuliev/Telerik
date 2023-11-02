@@ -45,7 +45,7 @@ public class TicketImpl implements Ticket {
     }
 
     private void setAdministrativeCosts(double administrativeCosts) {
-        ValidationHelper.validateNonNegativeNumber(administrativeCosts,
+        ValidationHelper.validateNumberNoLesserThan(administrativeCosts, 0,
                 String.format("Value of 'costs' must be a positive number. Actual value: %.2f.", administrativeCosts));
         this.administrativeCosts = administrativeCosts;
     }

@@ -23,8 +23,8 @@ public class ValidationHelper {
         }
     }
 
-    public static void validateNonNegativeNumber(double value, String errorMessage) {
-        if (value < 0) {
+    public static void validateNumberNoLesserThan(double value,double min, String errorMessage) {
+        if (value < min) {
             throw new InvalidUserInputException(errorMessage);
         }
     }
