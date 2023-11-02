@@ -6,7 +6,7 @@ import com.company.oop.agency.utils.ValidationHelper;
 public abstract class VehicleImpl implements Vehicle {
 
     private static final String INCORRECT_PASSENGERS_COUNT = "A vehicle with less than 1 passenger or more than 800 passengers cannot exist!";
-    public static final String INCORRECT_PRICE_PER_KM = "A vehicle with a price per kilometer lower than $0.10 or higher than $2.50 cannot exist!";
+    private static final String INCORRECT_PRICE_PER_KM = "A vehicle with a price per kilometer lower than $0.10 or higher than $2.50 cannot exist!";
 
     private static final int MIN_PASSENGERS = 1;
     private static final int MAX_PASSENGERS = 800;
