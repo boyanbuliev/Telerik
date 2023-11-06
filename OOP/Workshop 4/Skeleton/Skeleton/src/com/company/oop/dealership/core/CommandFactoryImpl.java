@@ -18,7 +18,6 @@ public class CommandFactoryImpl implements CommandFactory {
             case LOGOUT:
                 return new LogoutCommand(vehicleDealershipRepository);
             case SHOWUSERS:
-                //TODO
                 return new ShowUsersCommand(vehicleDealershipRepository);
             case ADDCOMMENT:
                 return new AddCommentCommand(vehicleDealershipRepository);
