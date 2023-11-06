@@ -52,7 +52,7 @@ public class UserImpl implements User {
     private final static String USER_TO_STRING = "Username: %s, FullName: %s %s, Role: %s";
     private final static String NO_VEHICLES_HEADER = "--NO VEHICLES--";
     private final static String NO_COMMENTS_HEADER = "--NO COMMENTS--";
-    private final static String YES_COMMENTS_HEADER = "--COMMENTS--";
+    private final static String COMMENTS_PRESENT_HEADER = "--COMMENTS--";
     private final static String USER_HEADER = "--USER %s--";
     private static final int NORMAL_ROLE_VEHICLE_LIMIT = 5;
 
@@ -167,9 +167,9 @@ public class UserImpl implements User {
             if (vehicles.get(i).getComments().isEmpty()) {
                 sb.append(NO_COMMENTS_HEADER).append(System.lineSeparator());
             } else {
-                sb.append(YES_COMMENTS_HEADER).append(System.lineSeparator());
+                sb.append(COMMENTS_PRESENT_HEADER).append(System.lineSeparator());
                 vehicles.get(i).getComments().forEach(sb::append);
-                sb.append(YES_COMMENTS_HEADER).append(System.lineSeparator());
+                sb.append(COMMENTS_PRESENT_HEADER).append(System.lineSeparator());
             }
         }
         return sb.toString().trim();
