@@ -14,6 +14,7 @@ public class MotorcycleImpl extends VehicleImpl implements Motorcycle {
             "Category must be between %d and %d characters long!",
             CATEGORY_LEN_MIN,
             CATEGORY_LEN_MAX);
+    private static final String MOTORCYCLE_PRINT = "%sCategory: %s";
 
     private String category;
 
@@ -34,6 +35,6 @@ public class MotorcycleImpl extends VehicleImpl implements Motorcycle {
 
     @Override
     public String toString() {
-        return String.format("%sCategory: %s", super.toString(), category);
+        return String.format(MOTORCYCLE_PRINT, super.toString(), category);
     }
 }

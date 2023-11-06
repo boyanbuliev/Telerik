@@ -14,6 +14,7 @@ public class CarImpl extends VehicleImpl implements Car {
             "Seats must be between %d and %d!",
             CAR_SEATS_MIN,
             CAR_SEATS_MAX);
+    private static final String CAR_PRINT = "%sSeats: %d";
 
     private int seats;
 
@@ -35,6 +36,8 @@ public class CarImpl extends VehicleImpl implements Car {
 
     @Override
     public String toString() {
-        return String.format("%sSeats: %d", super.toString(), seats);
+        return String.format(CAR_PRINT, super.toString(), seats);
+
+
     }
 }

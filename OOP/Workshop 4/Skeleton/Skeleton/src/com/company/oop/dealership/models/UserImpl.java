@@ -61,7 +61,7 @@ public class UserImpl implements User {
     private String firstName;
     private String lastName;
     private String password;
-    private final UserRole userRole;
+    private UserRole userRole;
     private final List<Vehicle> vehicles;
 
     public UserImpl(String username, String firstName, String lastName, String password, UserRole userRole) {

@@ -32,13 +32,14 @@ public abstract class VehicleImpl implements Vehicle {
             "Price must be between %.1f and %.1f!",
             PRICE_VAL_MIN,
             PRICE_VAL_MAX);
+    private static final String BASE_VEHICLE_PRINT = "%s:%nMake: %s%nModel: %s%nWheels: %d%nPrice: $%s%n";
 
     private String make;
     private String model;
     private double price;
-    private int wheels;
-    private VehicleType vehicleType;
-    private List<Comment> comments;
+    private final int wheels;
+    private final VehicleType vehicleType;
+    private final List<Comment> comments;
 
 
     public VehicleImpl(String make, String model, double price, int wheels, VehicleType vehicleType) {
@@ -107,7 +108,7 @@ public abstract class VehicleImpl implements Vehicle {
 
     @Override
     public String toString() {
-        return String.format("%s:%nMake: %s%nModel: %s%nWheels: %d%nPrice: $%s%n",
+        return String.format(BASE_VEHICLE_PRINT,
                 vehicleType, make, model, wheels, FormattingHelpers.removeTrailingZerosFromDouble(price));
     }
 }

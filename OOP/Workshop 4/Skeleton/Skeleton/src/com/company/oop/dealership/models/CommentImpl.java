@@ -13,10 +13,11 @@ public class CommentImpl implements Comment {
             "Content must be between %d and %d characters long!",
             CONTENT_LEN_MIN,
             CONTENT_LEN_MAX);
+    private static final String COMMENT_PRINT = "----------%n%s%nUser: %s%n----------%n";
 
 
     private String content;
-    private String author;
+    private final String author;
 
     public CommentImpl(String content, String author) {
         setContent(content);
@@ -40,6 +41,6 @@ public class CommentImpl implements Comment {
 
     @Override
     public String toString() {
-        return String.format("----------%n%s%nUser: %s%n----------%n", content, author);
+        return String.format(COMMENT_PRINT, content, author);
     }
 }

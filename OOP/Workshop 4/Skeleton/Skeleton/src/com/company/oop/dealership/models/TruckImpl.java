@@ -14,6 +14,7 @@ public class TruckImpl extends VehicleImpl implements Truck {
             "Weight capacity must be between %d and %d!",
             WEIGHT_CAP_MIN,
             WEIGHT_CAP_MAX);
+    private static final String TRUCK_PRINT = "%sWeight Capacity: %dt";
 
     private int weightCapacity;
 
@@ -34,6 +35,7 @@ public class TruckImpl extends VehicleImpl implements Truck {
 
     @Override
     public String toString() {
-        return String.format("%sWeight Capacity: %dt", super.toString(), weightCapacity);
+        return String.format(TRUCK_PRINT, super.toString(), weightCapacity);
+
     }
 }
