@@ -13,8 +13,8 @@ import static java.lang.String.format;
 
 public class UserImpl implements User {
 
-    public static final int USERNAME_LEN_MIN = 2;
-    public static final int USERNAME_LEN_MAX = 20;
+    private static final int USERNAME_LEN_MIN = 2;
+    private static final int USERNAME_LEN_MAX = 20;
     private static final String USERNAME_REGEX_PATTERN = "^[A-Za-z0-9]+$";
     private static final String USERNAME_PATTERN_ERR = "Username contains invalid symbols!";
     private static final String USERNAME_LEN_ERR = format(
@@ -22,8 +22,8 @@ public class UserImpl implements User {
             USERNAME_LEN_MIN,
             USERNAME_LEN_MAX);
 
-    public static final int PASSWORD_LEN_MIN = 5;
-    public static final int PASSWORD_LEN_MAX = 30;
+    private static final int PASSWORD_LEN_MIN = 5;
+    private static final int PASSWORD_LEN_MAX = 30;
     private static final String PASSWORD_REGEX_PATTERN = "^[A-Za-z0-9@*_-]+$";
     private static final String PASSWORD_PATTERN_ERR = "Password contains invalid symbols!";
     private static final String PASSWORD_LEN_ERR = format(
@@ -38,8 +38,8 @@ public class UserImpl implements User {
             LASTNAME_LEN_MIN,
             LASTNAME_LEN_MAX);
 
-    public static final int FIRSTNAME_LEN_MIN = 2;
-    public static final int FIRSTNAME_LEN_MAX = 20;
+    private static final int FIRSTNAME_LEN_MIN = 2;
+    private static final int FIRSTNAME_LEN_MAX = 20;
     private static final String FIRSTNAME_LEN_ERR = format(
             "Firstname must be between %s and %s characters long!",
             FIRSTNAME_LEN_MIN,

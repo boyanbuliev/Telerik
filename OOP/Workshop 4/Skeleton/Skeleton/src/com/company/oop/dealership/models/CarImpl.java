@@ -8,8 +8,8 @@ import static java.lang.String.format;
 
 public class CarImpl extends VehicleImpl implements Car {
 
-    public static final int CAR_SEATS_MIN = 1;
-    public static final int CAR_SEATS_MAX = 10;
+    private static final int CAR_SEATS_MIN = 1;
+    private static final int CAR_SEATS_MAX = 10;
     private static final String CAR_SEATS_ERR = format(
             "Seats must be between %d and %d!",
             CAR_SEATS_MIN,
