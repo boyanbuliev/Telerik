@@ -173,8 +173,6 @@ public class UserImpl implements User {
             }
         }
         return sb.toString().trim();
-
-//        za6to taka s lo6o..
     }
 
     @Override
