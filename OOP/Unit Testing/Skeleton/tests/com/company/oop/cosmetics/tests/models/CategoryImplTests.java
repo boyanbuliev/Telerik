@@ -35,7 +35,7 @@ public class CategoryImplTests {
 
     @Test
     public void constructor_Should_ThrowException_When_NameIsShorterThanExpected() {
-        Assertions.assertThrows(InvalidUserInputException.class, () -> category = new CategoryImpl("A"));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> new CategoryImpl("A"));
     }
 
     @Test

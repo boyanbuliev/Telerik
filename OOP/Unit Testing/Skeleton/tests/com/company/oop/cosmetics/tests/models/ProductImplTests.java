@@ -24,7 +24,7 @@ public class ProductImplTests {
 
     @Test
     public void constructor_Should_ThrowException_When_NameIsShorterThanExpected() {
-        Assertions.assertThrows(InvalidUserInputException.class, () -> product = new ProductImpl("a", "asdf", 2.5, GenderType.MEN));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> new ProductImpl("a", "asdf", 2.5, GenderType.MEN));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class ProductImplTests {
 
     @Test
     public void constructor_Should_ThrowException_When_BrandIsShorterThanExpected() {
-        Assertions.assertThrows(InvalidUserInputException.class, () -> product = new ProductImpl("asdf", "b", 2.5, GenderType.MEN));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> new ProductImpl("asdf", "b", 2.5, GenderType.MEN));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ProductImplTests {
 
     @Test
     public void constructor_Should_ThrowException_When_PriceIsNegative() {
-        Assertions.assertThrows(InvalidUserInputException.class, () -> product = new ProductImpl("asdf", "basd", -1, GenderType.MEN));
+        Assertions.assertThrows(InvalidUserInputException.class, () -> new ProductImpl("asdf", "basd", -1, GenderType.MEN));
     }
     @Test
     public void constructor_Should_InitializeGender_When_ArgumentsAreValid() {
