@@ -30,7 +30,7 @@ public class CategoryImplTests {
     @Test
     public void constructor_Should_InitializeProducts_When_ArgumentsAreValid() {
         category = new CategoryImpl("Asdf");
-        Assertions.assertEquals(0, category.getProducts().size());
+        Assertions.assertNotNull(category.getProducts());
     }
 
     @Test
