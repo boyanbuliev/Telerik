@@ -15,7 +15,7 @@ public class ShowCategoryCommandTests {
 
     private ProductRepository repository;
     private ShowCategoryCommand command;
-    List<String> list;
+    private List<String> list;
 
     @BeforeEach
     public void setUp() {

@@ -15,8 +15,8 @@ import java.util.List;
 public class AddProductToCategoryCommandTests {
 
     private ProductRepository productRepository;
-    AddProductToCategoryCommand command;
-    List<String> list;
+    private AddProductToCategoryCommand command;
+    private List<String> list;
 
     @BeforeEach
 

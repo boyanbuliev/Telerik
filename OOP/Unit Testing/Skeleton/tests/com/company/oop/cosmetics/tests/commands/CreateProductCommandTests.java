@@ -14,9 +14,9 @@ import java.util.List;
 
 public class CreateProductCommandTests {
 
-    ProductRepository repository;
-    CreateProductCommand command;
-    List<String> list;
+    private ProductRepository repository;
+    private CreateProductCommand command;
+    private List<String> list;
 
     @BeforeEach
     public void setUp() {

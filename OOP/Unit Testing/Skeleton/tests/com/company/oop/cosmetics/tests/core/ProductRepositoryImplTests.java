@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProductRepositoryImplTests {
 
-    ProductRepository productRepository;
+private ProductRepository productRepository;
 
     @BeforeEach
     public void setUp() {
