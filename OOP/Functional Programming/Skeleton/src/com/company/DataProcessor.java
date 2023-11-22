@@ -4,87 +4,42 @@ import com.company.models.Customer;
 import com.company.models.Genre;
 import com.company.models.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("ForLoopReplaceableByForEach")
 public class DataProcessor {
 
     public static long countCustomersAboveTargetAge(List<Customer> customers, int targetAge) {
-        int result = 0;
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getAge() > targetAge) {
-                result++;
-            }
-        }
-
-        return result;
+        return customers.stream().filter(c -> c.getAge() > targetAge).count();
     }
 
     /**
      * Hint: Is there a method on streams that asks the question "Do all elements match a given condition?"
      */
     public static boolean findIfAllCustomersAreAboveTargetAge(List<Customer> customers, int targetAge) {
-        boolean result = true;
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getAge() < targetAge) {
-                result = false;
-                break;
-            }
-        }
-
-        return result;
+        return customers.stream().allMatch(c -> c.getAge() == targetAge);
     }
 
     /**
      * Hint: Is there a method on streams that asks the question "Does any element match a given condition?"
      */
     public static boolean findIfAnyCustomersHasTargetName(List<Customer> customers, String targetName) {
-        boolean result = false;
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getName().equals(targetName)) {
-                result = true;
-                break;
-            }
-        }
-
-        return result;
+        return customers.stream().anyMatch(c -> c.getName().equals(targetName));
     }
 
     /**
      * Hint: Is there a method on streams that asks the question "Do all element match a given condition?"
      */
     public static boolean findIfAllCustomersDislikeMovie(List<Customer> customers, Movie targetMovie) {
-        boolean result = true;
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (!customers.get(i).getDislikedMovies().contains(targetMovie)) {
-                result = false;
-                break;
-            }
-        }
-
-        return result;
+        return customers.stream().allMatch(c -> c.getDislikedMovies().contains(targetMovie));
     }
 
     /**
      * Hint: What method on streams eliminates elements, based on some condition?
      */
     public static long findHowManyPeopleLikeMove(List<Customer> customers, Movie targetMovie) {
-        long count = 0;
-
-        for (int i = 0; i < customers.size(); i++) {
-            for (int j = 0; j < customers.get(i).getLikedMovies().size(); j++) {
-                if (customers.get(i).getLikedMovies().get(j).equals(targetMovie)) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
+        return customers.stream().filter(c -> c.getLikedMovies().contains(targetMovie)).count();
     }
 
     /**
@@ -92,20 +47,8 @@ public class DataProcessor {
      * is there a method that transforms one thing into another thing?
      */
     public static double findTheAverageAgeOfPeopleWhoDislikeMovies(List<Customer> customers, Movie targetMovie) {
-        List<Customer> customersWhoDislikeMovie = new ArrayList<>();
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getDislikedMovies().contains(targetMovie)) {
-                customersWhoDislikeMovie.add(customers.get(i));
-            }
-        }
-
-        double sum = 0;
-        for (int i = 0; i < customersWhoDislikeMovie.size(); i++) {
-            sum += customersWhoDislikeMovie.get(i).getAge();
-        }
-
-        return sum / customersWhoDislikeMovie.size();
+        return customers.stream().filter(c -> c.getDislikedMovies().contains(targetMovie)).mapToDouble(Customer::getAge)
+                .average().orElse(0);
     }
 
     /**
@@ -113,13 +56,9 @@ public class DataProcessor {
      * streams from one type to another?
      */
     public static double findAverageAgeOfAllCustomers(List<Customer> customers) {
-        double sum = 0;
+        return customers.stream().mapToDouble(Customer::getAge).average().orElse(0);
 
-        for (int i = 0; i < customers.size(); i++) {
-            sum += customers.get(i).getAge();
-        }
 
-        return sum / customers.size();
     }
 
     /**
@@ -127,51 +66,25 @@ public class DataProcessor {
      * all customers who do not have any movies with the targetGenre in their list of likedMovies.
      */
     public static List<Customer> findAllCustomersAboveTargetAgeThatLikeGenre(List<Customer> customers, int targetAge, Genre targetGenre) {
-        List<Customer> result = new ArrayList<>();
-
-        for (int i = 0; i < customers.size(); i++) {
-            var customer = customers.get(i);
-            if (customer.getAge() > targetAge) {
-                for (int j = 0; j < customer.getLikedMovies().size(); j++) {
-                    if (customer.getLikedMovies().get(j).getGenre().equals(targetGenre)) {
-                        result.add(customer);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return result;
+        return customers.stream()
+                .filter(c -> c.getAge() > targetAge)
+                .filter(c -> c.getLikedMovies().stream().anyMatch(m -> m.getGenre().equals(targetGenre)))
+                .collect(Collectors.toList());
     }
 
     /**
      * Hint: Eliminate all customers with age below the targetAge.
      */
     public static List<Customer> findAllCustomersUnderTargetAge(List<Customer> customers, int targetAge) {
-        List<Customer> customersUnderTargetAge = new ArrayList<>();
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getAge() < targetAge) {
-                customersUnderTargetAge.add(customers.get(i));
-            }
-        }
-
-        return customersUnderTargetAge;
+        return customers.stream().filter(c -> c.getAge() < targetAge).collect(Collectors.toList());
     }
 
     /**
      * Hint: https://www.baeldung.com/java-stream-reduce
      */
     public static Customer findTheCustomerWithTheLongestName(List<Customer> customers) {
-        Customer withLongestName = customers.get(0);
-
-        for (int i = 1; i < customers.size(); i++) {
-            if (customers.get(i).getName().length() > withLongestName.getName().length()) {
-                withLongestName = customers.get(i);
-            }
-        }
-
-        return withLongestName;
+        return customers.stream().reduce((c1, c2) -> c1.getName().length() > c2.getName().length() ? c1 : c2)
+                .orElse(customers.get(0));
     }
 
     /**
@@ -179,26 +92,8 @@ public class DataProcessor {
      * has a movie with a genre, different than the targetGenre.
      */
     public static List<Customer> findAllCustomersWhoLikeOnlyMoviesWithGenre(List<Customer> customers, Genre targetGenre) {
-        List<Customer> result = new ArrayList<>();
+        return customers.stream().filter(c -> c.getLikedMovies().stream()
+                .allMatch(m -> m.getGenre().equals(targetGenre))).collect(Collectors.toList());
 
-        for (Customer customer : customers) {
-            var customerMovies = customer.getLikedMovies();
-            var areSameGenre = false;
-
-            for (int j = 0; j < customerMovies.size() - 1; j++) {
-                if (!customerMovies.get(j).getGenre().equals(targetGenre)) break;
-
-                if (customerMovies.get(j).getGenre().equals(customerMovies.get(j + 1).getGenre())) {
-                    areSameGenre = true;
-                    break;
-                }
-            }
-
-            if (areSameGenre) {
-                result.add(customer);
-            }
-        }
-
-        return result;
     }
 }
