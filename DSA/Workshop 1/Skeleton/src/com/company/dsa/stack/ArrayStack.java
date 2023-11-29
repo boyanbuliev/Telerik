@@ -6,12 +6,13 @@ public class ArrayStack<E> implements Stack<E> {
     private E[] items;
     private int top;
 
+    public ArrayStack() {
+        items = (E[]) new Object[10];
+        top = 0;
+    }
+
     @Override
     public void push(E element) {
-        if (items == null) {
-            items = (E[]) new Object[10];
-            top = 0;
-        }
         if (top == items.length - 1) {
             resize();
         }

@@ -6,14 +6,15 @@ public class ArrayQueue<E> implements Queue<E> {
     private E[] items;
     private int head, tail, size;
 
+    public ArrayQueue() {
+        items = (E[]) new Object[10];
+        head = 0;
+        tail = -1;
+        size = 0;
+    }
+
     @Override
     public void enqueue(E element) {
-        if (items == null) {
-            items = (E[]) new Object[10];
-            size = 0;
-            head = 0;
-            tail = -1;
-        }
         if (size == items.length - 1) {
             resize();
         }
