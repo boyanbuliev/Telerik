@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Jumps {
 
@@ -7,29 +9,32 @@ public class Jumps {
         Scanner scanner = new Scanner(System.in);
 
         int n = Integer.parseInt(scanner.nextLine());
-        int[] numbers = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-
+        LinkedList<Integer> numbers = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt)
+                .boxed().collect(Collectors.toCollection(LinkedList::new));
+        int current = numbers.pop();
         int count = 0;
         int largest = 0;
-        int current;
-        int[] jumps = new int[n];
+        LinkedList<Integer> jumps = new LinkedList<>();
 
-        for (int i = 0; i < numbers.length; i++) {
-            current = numbers[i];
-            for (int j = i + 1; j < numbers.length; j++) {
-                if (numbers[j] > current) {
-                    current = numbers[j];
-                    count++;
-                }
+        while (!numbers.isEmpty()) {
+            LinkedList<Integer> numbers2 = new LinkedList<>(numbers);
+            if (numbers2.isEmpty()) {
+                current = numbers.pop();
+                jumps.offer(count);
+                if (count > largest)
+                    largest = count;
+                count = 0;
+                continue;
             }
-            jumps[i] = count;
-            if (largest < count)
-                largest = count;
-            count = 0;
+            if (numbers2.peek() > current) {
+                count++;
+                current = numbers2.pop();
+            } else {
+                numbers2.pop();
+            }
         }
+        jumps.offer(0);
         System.out.println(largest);
-        for (int jump : jumps) {
-            System.out.print(jump + " ");
-        }
+        System.out.println(jumps.stream().map(Object::toString).collect(Collectors.joining(" ")));
     }
 }
