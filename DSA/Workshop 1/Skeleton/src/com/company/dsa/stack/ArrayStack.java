@@ -13,7 +13,7 @@ public class ArrayStack<E> implements Stack<E> {
 
     @Override
     public void push(E element) {
-        if (top == items.length - 1) {
+        if (top == items.length) {
             resize();
         }
         items[top] = element;

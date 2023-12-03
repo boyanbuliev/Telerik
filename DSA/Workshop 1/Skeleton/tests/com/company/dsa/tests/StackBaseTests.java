@@ -114,7 +114,6 @@ public abstract class StackBaseTests {
     public void addLast_Should_MaintainCorrectOrder() {
         // Arrange & Act
         List<Integer> expected = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        stack = new ArrayStack<>();
         stack.push(1);
         stack.push(2);
         stack.push(3);

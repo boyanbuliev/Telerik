@@ -9,16 +9,16 @@ public class ArrayQueue<E> implements Queue<E> {
     public ArrayQueue() {
         items = (E[]) new Object[10];
         head = 0;
-        tail = -1;
+        tail = 0;
         size = 0;
     }
 
     @Override
     public void enqueue(E element) {
-        if (size == items.length - 1) {
+        if (tail == items.length) {
             resize();
         }
-        items[size] = element;
+        items[tail] = element;
         size++;
         tail++;
     }
@@ -54,9 +54,9 @@ public class ArrayQueue<E> implements Queue<E> {
 
     private void resize() {
         E[] curr = (E[]) new Object[items.length * 2];
-        for (int i = 0; i < items.length; i++) {
-            curr[i] = items[i];
-        }
+        System.arraycopy(items, head, curr, 0, tail);
+        head = 0;
+        tail = size;
         items = curr;
     }
 }

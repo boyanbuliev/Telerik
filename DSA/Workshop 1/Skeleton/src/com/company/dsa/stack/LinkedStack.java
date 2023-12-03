@@ -15,12 +15,8 @@ public class LinkedStack<E> implements Stack<E> {
     @Override
     public void push(E element) {
         Node<E> curr = new Node<>(element);
-        if (top == null) {
-            top = curr;
-        } else {
-            top.next = curr;
-        }
-        top = curr;
+        curr.next = top;
+        this.top = curr;
         size++;
     }
 

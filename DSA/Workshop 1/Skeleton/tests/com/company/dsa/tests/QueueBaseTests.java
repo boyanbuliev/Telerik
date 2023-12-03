@@ -121,7 +121,6 @@ public abstract class QueueBaseTests {
     public void addLast_Should_MaintainCorrectOrder() {
         // Arrange & Act
         List<Integer> expected = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        queue = new ArrayQueue<>();
         queue.enqueue(1);
         queue.enqueue(2);
         queue.enqueue(3);
@@ -130,7 +129,7 @@ public abstract class QueueBaseTests {
 
         // Assert
         Assertions.assertTrue(testListMatchesExpected(expected));
-    }
+}
 
     private boolean testListMatchesExpected(List<Integer> values) {
         if (queue.size() != values.size()) {
