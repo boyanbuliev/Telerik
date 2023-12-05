@@ -43,11 +43,14 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T value) {
+        checkIndex(index);
         if (index == size) {
             addLast(value);
             return;
+        } else if (index == 0) {
+            addFirst(value);
+            return;
         }
-        checkIndex(index);
         Node prevNode = head;
         for (int i = 0; i < index - 1; i++) {
             prevNode = prevNode.next;
@@ -75,6 +78,11 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
+        if (index == 0) {
+            return getFirst();
+        } else if (index == size) {
+            return getLast();
+        }
         checkIndex(index);
         checkIfEmpty();
         Node curr = head;
@@ -98,29 +106,30 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T removeFirst() {
         checkIfEmpty();
-        Node curr = head;
+        T curr = head.value;
+        head = head.next;
         if (size == 1) {
-            head = null;
+            tail = null;
         } else {
-            head = head.next;
             head.prev = null;
         }
         size--;
-        return curr.value;
+        return curr;
     }
 
     @Override
     public T removeLast() {
         checkIfEmpty();
-        Node curr = tail;
+        T curr = tail.value;
         if (size == 1) {
+            head = null;
             tail = null;
         } else {
             tail = tail.prev;
             tail.next = null;
         }
         size--;
-        return curr.value;
+        return curr;
     }
 
     @Override

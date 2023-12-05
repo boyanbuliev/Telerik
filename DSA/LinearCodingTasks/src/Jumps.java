@@ -1,7 +1,6 @@
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.util.Stack;
 
 public class Jumps {
 
@@ -9,32 +8,20 @@ public class Jumps {
         Scanner scanner = new Scanner(System.in);
 
         int n = Integer.parseInt(scanner.nextLine());
-        LinkedList<Integer> numbers = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt)
-                .boxed().collect(Collectors.toCollection(LinkedList::new));
-        int current = numbers.pop();
-        int count = 0;
-        int largest = 0;
-        LinkedList<Integer> jumps = new LinkedList<>();
+        int[] numbers = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        while (!numbers.isEmpty()) {
-            LinkedList<Integer> numbers2 = new LinkedList<>(numbers);
-            if (numbers2.isEmpty()) {
-                current = numbers.pop();
-                jumps.offer(count);
-                if (count > largest)
-                    largest = count;
-                count = 0;
-                continue;
+        int[] result = new int[n];
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && numbers[i] >= numbers[stack.peek()]) {
+                stack.pop();
             }
-            if (numbers2.peek() > current) {
-                count++;
-                current = numbers2.pop();
-            } else {
-                numbers2.pop();
+
+            if (!stack.isEmpty()) {
+                result[i] = result[stack.peek()] + 1;
             }
+            stack.push(i);
         }
-        jumps.offer(0);
-        System.out.println(largest);
-        System.out.println(jumps.stream().map(Object::toString).collect(Collectors.joining(" ")));
     }
 }
