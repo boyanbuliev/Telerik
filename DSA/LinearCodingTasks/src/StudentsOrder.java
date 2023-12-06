@@ -1,42 +1,24 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentsOrder {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
 
-        int[] nk = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        int[] nk = Arrays.stream(scanner.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        Map<String, Integer> students = new HashMap<>();
-        Map<Integer, String> studentsIntKey = new TreeMap<>();
-
-        String[] studentsArr = scanner.nextLine().split(" ");
-
-        for (int i = 0; i < nk[0]; i++) {
-            students.put(studentsArr[i], i);
-            studentsIntKey.put(i, studentsArr[i]);
-        }
+        List<String> students = Arrays.stream(scanner.readLine().split(" ")).collect(Collectors.toList());
 
         for (int i = 0; i < nk[1]; i++) {
-            String[] studentsToSwap = scanner.nextLine().split(" ");
-            int student1pos = students.get(studentsToSwap[1]);
-            int student2pos = students.get(studentsToSwap[0]);
-            if (student1pos < student2pos) {
-                for (Map.Entry<String, Integer> entry : students.entrySet()) {
-                    if (entry.getValue() >= student1pos && entry.getValue() < student2pos) {
-                        entry.setValue(entry.getValue() + 1);
-                    }
-                }
-                students.put(studentsToSwap[0], student1pos);
-
-            } else if (student1pos > student2pos) {
-                for (Map.Entry<String, Integer> entry : students.entrySet()) {
-                    if (entry.getValue() > student2pos && entry.getValue() < student1pos) {
-                        entry.setValue(entry.getValue() - 1);
-                    }
-                }
-                students.put(studentsToSwap[0], student1pos - 1);
-            }
+            String[] studentsToChange = scanner.readLine().split(" ");
+            int index = students.indexOf(studentsToChange[0]);
+            students.remove(index);
+            students.add(students.indexOf(studentsToChange[1]), studentsToChange[0]);
         }
-        students.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(e -> System.out.print(e.getKey() + " "));
+        System.out.println(students.toString().replaceAll("[\\[\\],]", ""));
     }
 }
