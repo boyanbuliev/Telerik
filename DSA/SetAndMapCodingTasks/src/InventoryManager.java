@@ -1,84 +1,77 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InventoryManager {
+
+    private static Set<Item> allItems = new TreeSet<>();
+    private static Map<String, Set<Item>> itemsSortedByType = new HashMap<>();
+
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        Set<Item> items = new TreeSet<>();
+        while (true) {
+            String command = reader.readLine();
 
-        String input = reader.readLine();
-        while (!input.equals("end")) {
-            if (input.contains("add")) {
-                String[] item = input.split(" ");
-                Item curr = new Item(item[1], Double.parseDouble(item[2]), item[3]);
-                if (items.add(curr)) {
-                    System.out.printf("Ok: Item %s added successfully%n", curr.name);
-                } else {
-                    System.out.printf("Error: Item %s already exists%n", curr.name);
-                }
-            } else if (input.contains("filter by type")) {
-                String type = input.split(" ")[3];
-                if (items.stream().noneMatch(i -> i.type.equals(type))) {
-                    System.out.printf("Error: Type %s does not exist%n", type);
-                    input = reader.readLine();
-                    continue;
-                }
-                System.out.printf("Ok: %s%n", items.stream()
-                        .filter(i -> i.type.equals(type))
-                        .limit(10)
-                        .map(Item::toString)
-                        .collect(Collectors.joining(", ")).trim());
-            } else {
-                double from;
-                double to;
+            String[] commandArgs = command.split(" ");
+            switch (commandArgs[0]) {
+                case "add":
+                    add(commandArgs);
+                    break;
+                case "filter":
+                    filter(commandArgs);
+                    break;
 
-                if (input.matches("^filter by price from .* to .*")) {
-                    from = Double.parseDouble(input.split(" ")[4]);
-                    to = Double.parseDouble(input.split(" ")[6]);
-                } else if (input.matches("^filter by price from(?!.* to).*$")) {
-                    from = Double.parseDouble(input.split(" ")[4]);
-                    to = -1;
-                } else {
-                    from = -1;
-                    to = Double.parseDouble(input.split(" ")[4]);
-                }
-                System.out.printf("Ok: %s%n", items.stream()
-                        .filter(i -> (from == -1 || i.price >= from) && (to == -1 || i.price <= to))
-                        .limit(10)
-                        .map(Item::toString)
-                        .collect(Collectors.joining(", ")));
+                case "end":
+                    return;
             }
-//            } else if (input.matches("^filter by price from .* to .*")) {
-//                double from = Double.parseDouble(input.split(" ")[4]);
-//                double to = Double.parseDouble(input.split(" ")[6]);
-//                System.out.printf("Ok: %s%n", items.stream()
-//                        .filter(i -> i.price >= from && i.price <= to)
-//                        .limit(10)
-//                        .map(Item::toString)
-//                        .collect(Collectors.joining(", ")).trim());
-//            } else if (input.matches("^filter by price from(?!.* to).*$")) {
-//                double from = Double.parseDouble(input.split(" ")[4]);
-//                System.out.printf("Ok: %s%n", items.stream()
-//                        .filter(i -> i.price >= from)
-//                        .limit(10)
-//                        .map(Item::toString)
-//                        .collect(Collectors.joining(", ")));
-//            } else {
-//                double to = Double.parseDouble(input.split(" ")[4]);
-//                System.out.printf("Ok: %s%n", items.stream()
-//                        .filter(i -> i.price <= to)
-//                        .limit(10)
-//                        .map(Item::toString)
-//                        .collect(Collectors.joining(", ")).trim());
-//            }
-            input = reader.readLine();
+        }
+    }
+
+    private static void add(String[] args) {
+        Item item = new Item(args[1], Double.parseDouble(args[2]), args[3]);
+        if (allItems.add(item)) {
+            itemsSortedByType.putIfAbsent(item.type, new TreeSet<>());
+            itemsSortedByType.get(item.type).add(item);
+            System.out.printf("Ok: Item %s added successfully%n", item.name);
+        } else {
+            System.out.printf("Error: Item %s already exists%n", item.name);
+        }
+    }
+
+    private static void filter(String[] args) {
+        if (args[2].equals("type")) {
+            filterByType(args[3]);
+        } else {
+            filterByPrice(args);
+        }
+    }
+
+    private static void filterByPrice(String[] args) {
+        if (args.length < 7 && args[3].equals("from")) {
+            System.out.printf("Ok: %s%n", allItems.stream().filter(i -> i.price >= Double.parseDouble(args[4]))
+                    .limit(10).map(Item::toString).collect(Collectors.joining(", ")));
+        } else if (args.length < 7 && args[3].equals("to")) {
+            System.out.printf("Ok: %s%n", allItems.stream().filter(i -> i.price <= Double.parseDouble(args[4]))
+                    .limit(10).map(Item::toString).collect(Collectors.joining(", ")));
+        } else {
+            System.out.printf("Ok: %s%n", allItems.stream()
+                    .filter(i -> i.price >= Double.parseDouble(args[4]) && i.price <= Double.parseDouble(args[6]))
+                    .limit(10).map(Item::toString).collect(Collectors.joining(", ")));
+        }
+    }
+
+    private static void filterByType(String type) {
+        if (!itemsSortedByType.containsKey(type)) {
+            System.out.printf("Error: Type %s does not exist%n", type);
+        } else {
+            System.out.printf("Ok: %s%n",
+                    itemsSortedByType.get(type)
+                            .stream().limit(10).map(Item::toString)
+                            .collect(Collectors.joining(", ")));
+
         }
     }
 
@@ -98,14 +91,13 @@ public class InventoryManager {
             if (this == o) return true;
             if (!(o instanceof Item)) return false;
             Item item = (Item) o;
-            return Double.compare(item.price, price) == 0 && Objects.equals(name, item.name) && Objects.equals(type, item.type);
+            return Objects.equals(name, item.name);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(price, name, type);
+            return Objects.hash(name);
         }
-
 
         @Override
         public String toString() {
