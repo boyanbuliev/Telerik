@@ -10,7 +10,7 @@ public class Fibonacci {
     }
 
     private static long fibonacci(int n) {
-        long nums[] = new long[n + 2];
+        long[] nums = new long[n + 2];
         nums[0] = 0;
         nums[1] = 1;
 
