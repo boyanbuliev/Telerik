@@ -5,19 +5,19 @@ import java.io.InputStreamReader;
 public class Fibonacci {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        System.out.println(fibonacci(Integer.parseInt(reader.readLine())));
+        int n = Integer.parseInt(reader.readLine());
+        long[] arr = new long[n + 1];
+        System.out.println(fibonacci(n, arr));
     }
 
-    private static long fibonacci(int n) {
-        long[] nums = new long[n + 2];
-        nums[0] = 0;
-        nums[1] = 1;
-
-        for (int i = 2; i <= n; i++) {
-            nums[i] = nums[i - 1] + nums[i - 2];
+    private static long fibonacci(int n, long[] arr) {
+        if (arr[n] != 0) {
+            return arr[n];
         }
+        if (n <= 2) {
+            return arr[n] = 1;
+        }
+        return arr[n] = fibonacci(n - 1, arr) + fibonacci(n - 2, arr);
 
-        return nums[n];
     }
 }
