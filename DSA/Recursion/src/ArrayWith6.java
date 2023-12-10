@@ -15,9 +15,9 @@ public class ArrayWith6 {
     }
 
     private static boolean arrayWith6(int[] arr, int index) {
-        if (index == arr.length) {
+        if (index == arr.length || arr.length == 0) {
             return false;
-        }
+    }
         return arr[index] == 6 || arrayWith6(arr, index + 1);
     }
 }

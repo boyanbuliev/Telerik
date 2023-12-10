@@ -14,7 +14,7 @@ public class CountHi {
             return 0;
         }
 
-        return str.startsWith("hi") ? 1 + countHi(str.substring(1)) : countHi(str.substring(1));
+        return str.startsWith("hi") ? 1 + countHi(str.substring(2)) : countHi(str.substring(1));
     }
 
 }

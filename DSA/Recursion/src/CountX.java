@@ -14,6 +14,6 @@ public class CountX {
             return 0;
         }
 
-        return str.charAt(0) == 'x' ? 1 + countX(str.substring(1)) : countX(str.substring(1));
+        return (str.charAt(0) == 'x' ? 1 : 0) + countX(str.substring(1));
     }
 }

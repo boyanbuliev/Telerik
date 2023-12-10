@@ -6,16 +6,21 @@ public class ChangePi {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println(changePi(reader.readLine(), 0));
+        System.out.println(changePi(reader.readLine()));
     }
 
-    private static String changePi(String str, int index) {
-        if (index == str.length() - 1) {
+    private static String changePi(String str) {
+//        if (index == str.length() - 1) {
+//            return str;
+//        }
+//
+//        return str.startsWith("pi", index) ?
+//                changePi(str.substring(0, index) + "3.14" + str.substring(index + 2), index + 3) :
+//                changePi(str, index + 1);
+//    }
+        if (str.length() < 2) {
             return str;
         }
-
-        return str.substring(index, index + 2).equals("pi") ?
-                changePi(str.substring(0, index) + "3.14" + str.substring(index + 2), index + 3) :
-                changePi(str, index + 1);
+        return str.startsWith("pi") ? "3.14" + changePi(str.substring(2)) : str.charAt(0) + changePi(str.substring(1));
     }
 }
