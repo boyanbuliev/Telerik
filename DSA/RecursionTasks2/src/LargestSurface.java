@@ -19,8 +19,7 @@ public class LargestSurface {
         for (int i = 0; i < arr[0]; i++) {
             for (int j = 0; j < arr[1]; j++) {
                 int curr = traverse(labyrinth, i, j, labyrinth[i][j]);
-                if (curr > highest)
-                    highest = curr;
+                highest = Math.max(curr, highest);
             }
         }
         System.out.println(highest);

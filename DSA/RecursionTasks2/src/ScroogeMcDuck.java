@@ -35,9 +35,6 @@ public class ScroogeMcDuck {
         if (isOutOfBounds(labyrinth, row, col)) {
             return;
         }
-        if (isZero(labyrinth, row, col)) {
-            return;
-        }
         if (hasNoMoves(labyrinth, row, col)) {
             return;
         }
@@ -83,10 +80,6 @@ public class ScroogeMcDuck {
                 && (isOutOfBounds(labyrinth, row, col + 1) || labyrinth[row][col + 1] == 0)
                 && (isOutOfBounds(labyrinth, row - 1, col) || labyrinth[row - 1][col] == 0)
                 && (isOutOfBounds(labyrinth, row + 1, col) || labyrinth[row + 1][col] == 0);
-    }
-
-    private static boolean isZero(int[][] labyrinth, int row, int col) {
-        return labyrinth[row][col] == 0;
     }
 
     private static boolean isOutOfBounds(int[][] labyrinth, int row, int col) {
