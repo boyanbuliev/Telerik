@@ -16,7 +16,7 @@ public class FilesUtils {
 
         File[] files = directory.listFiles();
 
-        if (files.length == 0) {
+        if (files == null || files.length == 0) {
             return;
         }
         System.out.printf("%s%s:%n", SHPACIQ.repeat(counter), directory.getName());
@@ -37,7 +37,7 @@ public class FilesUtils {
         File dir = new File(path);
         File[] files = dir.listFiles();
 
-        if (files.length == 0) {
+        if (files == null || files.length == 0) {
             return output;
         }
         for (File file : files) {
@@ -56,31 +56,26 @@ public class FilesUtils {
         File dir = new File(path);
         File[] files = dir.listFiles();
 
-        if (files.length == 0) {
+        if (files == null || files.length == 0) {
             return false;
         }
-        boolean flag = false;
-
         for (File file : files) {
-            if (file.isDirectory()) {
-                flag = fileExists(file.getPath(), fileName);
-            } else {
+            if (file.isDirectory() && fileExists(file.getAbsolutePath(), fileName)) {
+                return true;
+            } else if (file.isFile()) {
                 if (file.getName().equals(fileName)) {
                     return true;
                 }
             }
-            if (flag) {
-                return flag;
-            }
         }
-        return flag;
+        return false;
     }
 
     public static Map<String, Integer> getDirectoryStats(String path) {
         Map<String, Integer> stats = new HashMap<>();
         File dir = new File(path);
         File[] files = dir.listFiles();
-        if (files.length == 0) {
+        if (files == null || files.length == 0) {
             return stats;
         }
         for (File file : files) {
