@@ -62,10 +62,8 @@ public class FilesUtils {
         for (File file : files) {
             if (file.isDirectory() && fileExists(file.getAbsolutePath(), fileName)) {
                 return true;
-            } else if (file.isFile()) {
-                if (file.getName().equals(fileName)) {
-                    return true;
-                }
+            } else if (file.getName().equals(fileName)) {
+                return true;
             }
         }
         return false;
