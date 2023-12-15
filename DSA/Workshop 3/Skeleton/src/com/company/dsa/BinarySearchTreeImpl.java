@@ -3,6 +3,7 @@ package com.company.dsa;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySearchTree<E> {
     private E value;
@@ -32,36 +33,24 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
 
     @Override
     public void insert(E value) {
-        BinarySearchTreeImpl<E> newVal = new BinarySearchTreeImpl<>(value);
-
         if (value.compareTo(this.value) < 0) {
-            if (this.left == null) {
-                this.left = newVal;
-                return;
+            if (left == null) {
+                left = new BinarySearchTreeImpl<>(value);
+            } else {
+                left.insert(value);
             }
-            this.left.insert(value);
         } else {
-            if (this.right == null) {
-                this.right = newVal;
-                return;
+            if (right == null) {
+                right = new BinarySearchTreeImpl<>(value);
+            } else {
+                right.insert(value);
             }
-            this.right.insert(value);
         }
     }
 
     @Override
     public boolean search(E value) {
-        if (this.value == value) {
-            return true;
-        }
-
-        if (this.left != null && this.left.search(value)) {
-            return true;
-        }
-        if (this.right != null && this.right.search(value)) {
-            return true;
-        }
-        return false;
+        return value.compareTo(this.value) == 0 || (value.compareTo(this.value) < 0 ? left != null && left.search(value) : (right != null && right.search(value)));
     }
 
     @Override
@@ -108,12 +97,12 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
 
     @Override
     public List<E> bfs() {
-        ArrayDeque<BinarySearchTreeImpl<E>> queue = new ArrayDeque<>();
+        Queue<BinarySearchTreeImpl<E>> queue = new ArrayDeque<>();
         List<E> values = new ArrayList<>();
         queue.offer(this);
 
         while (!queue.isEmpty()) {
-            BinarySearchTreeImpl<E> next = queue.pop();
+            BinarySearchTreeImpl<E> next = queue.poll();
             values.add(next.value);
             if (next.left != null) {
                 queue.offer(next.left);
@@ -130,10 +119,77 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
         return Math.max(this.left != null ? this.left.height() + 1 : 0, this.right != null ? this.right.height() + 1 : 0);
     }
 
-//    @Override
-//    public boolean remove(E value) {
-//        return false;
-//    }
+    @Override
+    public boolean remove(E value) {
+        if (!search(value)) {
+            return false;
+        }
 
+        return removeNodeRecursively(value, this);
+    }
 
+    private boolean removeNodeRecursively(E value, BinarySearchTreeImpl<E> root) {
+        BinarySearchTreeImpl<E> node = getNode(value);
+        BinarySearchTreeImpl<E> parent = getParent(node, root);
+
+        if (node.left == null && node.right == null) {
+            removeLeaf(node, parent);
+        } else if (node.left == null) {
+            removeSingleChildNode(node, parent, node.right);
+        } else if (node.right == null) {
+            removeSingleChildNode(node, parent, node.left);
+        } else {
+            BinarySearchTreeImpl<E> maxNodeInLeftSubtree = getMaxValueNode(node.left);
+            node.value = maxNodeInLeftSubtree.value;
+            node.left.removeNodeRecursively(maxNodeInLeftSubtree.value, root);
+        }
+        return true;
+    }
+
+    private BinarySearchTreeImpl<E> getMaxValueNode(BinarySearchTreeImpl<E> node) {
+        if (node.right == null) {
+            return node;
+        }
+        return right.getMaxValueNode(node.right);
+    }
+
+    private void removeSingleChildNode(BinarySearchTreeImpl<E> nodeToRemove, BinarySearchTreeImpl<E> parent, BinarySearchTreeImpl<E> nodeToStay) {
+        if (parent.left == nodeToRemove) {
+            parent.left = nodeToStay;
+        }
+        if (parent.right == nodeToRemove) {
+            parent.right = nodeToStay;
+        }
+    }
+
+    private void removeLeaf(BinarySearchTreeImpl<E> leaf, BinarySearchTreeImpl<E> parent) {
+        if (parent.left == leaf) {
+            parent.left = null;
+        }
+        if (parent.right == leaf) {
+            parent.right = null;
+        }
+    }
+
+    private BinarySearchTreeImpl<E> getParent(BinarySearchTreeImpl<E> node, BinarySearchTreeImpl<E> root) {
+        if (node == root) {
+            return root;
+        }
+        if (root.left == node || root.right == node) {
+            return root;
+        }
+        if (node.value.compareTo(root.value) <= 0) {
+            return getParent(node, root.left);
+        }
+        return getParent(node, root.right);
+    }
+
+    private BinarySearchTreeImpl<E> getNode(E value) {
+        if (value.equals(this.value)) {
+            return this;
+        } else if (value.compareTo(this.value) < 0) {
+            return this.left.getNode(value);
+        }
+        return this.right.getNode(value);
+    }
 }

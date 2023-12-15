@@ -24,5 +24,5 @@ public interface BinarySearchTree<E extends Comparable<E>> {
 
     int height();
 
-//    boolean remove(E value);
+    boolean remove(E value);
 }

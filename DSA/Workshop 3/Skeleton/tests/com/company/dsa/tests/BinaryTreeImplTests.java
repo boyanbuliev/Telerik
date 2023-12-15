@@ -176,83 +176,82 @@ public class BinaryTreeImplTests {
         Assertions.assertEquals(4, testTree.height());
     }
 
-    // Uncomment when implementing remove method
-//    @Test
-//    public void remove_Should_ReturnFalse_When_SingleNotMatchingItem() {
-//        // Arrange
-//        testTree = new BinarySearchTreeImpl<>(5);
-//
-//        // act, Assert
-//        Assertions.assertFalse(testTree.remove(6));
-//    }
-//
-//    @Test
-//    public void remove_Should_ReplaceRoot_When_ValueToBeRemovedIsInRoot() {
-//        // Arrange
-//        prepareTestTree();
-//        List<Integer> treeValuesAfterRemove = List.of(20, 30, 40, 60, 70, 71, 72, 80);
-//
-//        // Act
-//        testTree.remove(50);
-//
-//        // Assert
-//        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
-//    }
-//
-//    @Test
-//    public void remove_Should_MaintainCorrectOrdering_When_ValuePresentAndHasNoChildren() {
-//        // Arrange
-//        prepareTestTree();
-//        testTree.insert(42);
-//        List<Integer> treeValuesAfterRemove = List.of(20, 30, 40, 50, 60, 70, 71, 72, 80);
-//
-//        // Act
-//        testTree.remove(42);
-//
-//        // Assert
-//        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
-//    }
-//
-//    @Test
-//    public void remove_Should_MaintainCorrectOrdering_When_ValuePresentAndHasRightChildOnly() {
-//        // Arrange
-//        prepareTestTree();
-//        testTree.insert(42);
-//        List<Integer> treeValuesAfterRemove = List.of(20, 30, 42, 50, 60, 70, 71, 72, 80);
-//
-//        // Act
-//        testTree.remove(40);
-//
-//        // Assert
-//        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
-//    }
-//
-//    @Test
-//    public void remove_Should_MaintainCorrectOrdering_When_ValuePresentAndHasLeftChildOnly() {
-//        // Arrange
-//        prepareTestTree();
-//        testTree.insert(39);
-//        List<Integer> treeValuesAfterRemove = List.of(20, 30, 39, 50, 60, 70, 71, 72, 80);
-//
-//        // Act
-//        testTree.remove(40);
-//
-//        // Assert
-//        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
-//    }
-//
-//    @Test
-//    public void remove_Should_MaintainCorrectOrdering_WhenValuePresentAndHasBothChildren() {
-//        // Arrange
-//        prepareTestTree();
-//        List<Integer> treeValuesAfterRemove = List.of(20, 30, 40, 50, 60, 71, 72, 80);
-//
-//        // Act
-//        testTree.remove(70);
-//
-//        // Assert
-//        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
-//    }
+    @Test
+    public void remove_Should_ReturnFalse_When_SingleNotMatchingItem() {
+        // Arrange
+        testTree = new BinarySearchTreeImpl<>(5);
+
+        // act, Assert
+        Assertions.assertFalse(testTree.remove(6));
+    }
+
+    @Test
+    public void remove_Should_ReplaceRoot_When_ValueToBeRemovedIsInRoot() {
+        // Arrange
+        prepareTestTree();
+        List<Integer> treeValuesAfterRemove = List.of(20, 30, 40, 60, 70, 71, 72, 80);
+
+        // Act
+        testTree.remove(50);
+
+        // Assert
+        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
+    }
+
+    @Test
+    public void remove_Should_MaintainCorrectOrdering_When_ValuePresentAndHasNoChildren() {
+        // Arrange
+        prepareTestTree();
+        testTree.insert(42);
+        List<Integer> treeValuesAfterRemove = List.of(20, 30, 40, 50, 60, 70, 71, 72, 80);
+
+        // Act
+        testTree.remove(42);
+
+        // Assert
+        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
+    }
+
+    @Test
+    public void remove_Should_MaintainCorrectOrdering_When_ValuePresentAndHasRightChildOnly() {
+        // Arrange
+        prepareTestTree();
+        testTree.insert(42);
+        List<Integer> treeValuesAfterRemove = List.of(20, 30, 42, 50, 60, 70, 71, 72, 80);
+
+        // Act
+        testTree.remove(40);
+
+        // Assert
+        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
+    }
+
+    @Test
+    public void remove_Should_MaintainCorrectOrdering_When_ValuePresentAndHasLeftChildOnly() {
+        // Arrange
+        prepareTestTree();
+        testTree.insert(39);
+        List<Integer> treeValuesAfterRemove = List.of(20, 30, 39, 50, 60, 70, 71, 72, 80);
+
+        // Act
+        testTree.remove(40);
+
+        // Assert
+        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
+    }
+
+    @Test
+    public void remove_Should_MaintainCorrectOrdering_WhenValuePresentAndHasBothChildren() {
+        // Arrange
+        prepareTestTree();
+        List<Integer> treeValuesAfterRemove = List.of(20, 30, 40, 50, 60, 71, 72, 80);
+
+        // Act
+        testTree.remove(70);
+
+        // Assert
+        Assertions.assertIterableEquals(treeValuesAfterRemove, inOrder(testTree));
+    }
 
     private void prepareTestTree() {
         testTree = new BinarySearchTreeImpl<>(50);
