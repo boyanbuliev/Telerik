@@ -20,10 +20,9 @@ public class SmallWorld {
 
         for (int i = 0; i < nm[0]; i++) {
             for (int j = 0; j < nm[1]; j++) {
-                int res = conquer(matrix, i, j);
-                if (res > 0) {
-                    queue.offer(res);
-                }
+                if (matrix[i][j] == 0)
+                    continue;
+                queue.offer(conquer(matrix, i, j));
             }
         }
         while (!queue.isEmpty()) {
