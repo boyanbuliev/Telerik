@@ -45,7 +45,7 @@ public class BeerRestController {
         return beer;
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public void delete(@PathVariable int id) {
         beers.remove(beers.get(id));
     }
