@@ -22,7 +22,6 @@ public class BeerRestController {
     }
 
     @GetMapping
-
     public List<Beer> get() {
         return beers;
     }
