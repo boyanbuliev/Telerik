@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telerik.web.beertag.exceptions.DuplicateEntityException;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
+import org.telerik.web.beertag.exceptions.UnauthorizedOperationException;
 import org.telerik.web.beertag.models.Beer;
+import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.repositories.BeerRepository;
 
 import java.util.List;
@@ -44,7 +46,10 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void update(Beer beer) {
+    public void update(Beer beer, User user) {
+        if (!user.isAdmin()) {
+            throw new UnauthorizedOperationException("Only admins can modify beer.");
+        }
         boolean duplicateExists = true;
         try {
             Beer existingBeer = repository.getByName(beer.getName());
@@ -61,7 +66,10 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, User user) {
+        if (!user.isAdmin()) {
+            throw new UnauthorizedOperationException("Only admins can delete beer.");
+        }
         repository.delete(id);
     }
 }
