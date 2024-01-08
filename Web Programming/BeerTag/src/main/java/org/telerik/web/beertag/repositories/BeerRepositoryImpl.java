@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public class BeerRepositoryImpl implements BeerRepository {
 
-    private List<Beer> beers;
+    private final List<Beer> beers;
 
     public BeerRepositoryImpl() {
         beers = new ArrayList<>();
@@ -20,7 +20,7 @@ public class BeerRepositoryImpl implements BeerRepository {
 
     @Override
     public List<Beer> get() {
-        return beers;
+        return new ArrayList<>(beers);
     }
 
     @Override
