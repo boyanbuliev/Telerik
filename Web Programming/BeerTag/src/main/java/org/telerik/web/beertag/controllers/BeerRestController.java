@@ -9,8 +9,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.telerik.web.beertag.exceptions.DuplicateEntityException;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.exceptions.UnauthorizedOperationException;
+import org.telerik.web.beertag.helpers.BeerMapper;
 import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
+import org.telerik.web.beertag.models.dtos.BeerDto;
 import org.telerik.web.beertag.services.BeerService;
 
 import java.util.List;
@@ -18,18 +20,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/beers")
 public class BeerRestController {
-    private BeerService service;
-    private AuthenticationHelper helper;
+    private final BeerService service;
+    private final BeerMapper mapper;
+    private final AuthenticationHelper helper;
 
     @Autowired
-    public BeerRestController(BeerService service, AuthenticationHelper helper) {
+    public BeerRestController(BeerService service, BeerMapper mapper, AuthenticationHelper helper) {
         this.service = service;
+        this.mapper = mapper;
         this.helper = helper;
     }
 
     @GetMapping
-    public List<Beer> get() {
-        return service.get();
+    public List<Beer> get(@RequestParam(required = false) String name, @RequestParam(required = false) Double maxAbv,
+                          @RequestParam(required = false) Double minAbv, @RequestParam(required = false) Integer styleId,
+                          @RequestParam(required = false) String sortBy, @RequestParam(required = false) String sortOrder) {
+        return service.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
     }
 
     @GetMapping("/{id}")
@@ -42,21 +48,23 @@ public class BeerRestController {
     }
 
     @PostMapping
-    public Beer create(@RequestHeader HttpHeaders headers, @Valid @RequestBody Beer beer) {
+    public Beer create(@RequestHeader HttpHeaders headers, @Valid @RequestBody BeerDto beerDto) {
         try {
             User user = helper.tryGetUser(headers);
-            service.create(beer);
+            Beer beer = mapper.fromDto(beerDto);
+            service.create(beer, user);
+            return beer;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
-        return beer;
     }
 
     @PutMapping("/{id}")
-    public Beer update(@RequestHeader HttpHeaders headers, @Valid @RequestBody Beer beer, @PathVariable int id) {
+    public Beer update(@RequestHeader HttpHeaders headers, @Valid @RequestBody BeerDto beerDto, @PathVariable int id) {
         try {
             User user = helper.tryGetUser(headers);
-            service.update(beer, user);
+            Beer beer = mapper.fromDto(beerDto, id);
+            return service.update(beer, id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
@@ -64,7 +72,6 @@ public class BeerRestController {
         } catch (UnauthorizedOperationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-        return beer;
     }
 
     @DeleteMapping("/{id}")

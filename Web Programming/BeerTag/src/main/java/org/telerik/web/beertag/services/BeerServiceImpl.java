@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class BeerServiceImpl implements BeerService {
 
-    private BeerRepository repository;
+    private final BeerRepository repository;
 
     @Autowired
     public BeerServiceImpl(BeerRepository repository) {
@@ -22,37 +22,37 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<Beer> get() {
-        return repository.get();
+    public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortBy, String sortOrder) {
+        return repository.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
     }
 
     @Override
     public Beer getById(int id) {
-        return repository.getById(id);
+        return repository.get(id);
     }
 
     @Override
-    public void create(Beer beer) {
+    public void create(Beer beer, User user) {
         boolean duplicateExists = true;
         try {
-            repository.getByName(beer.getName());
+            repository.get(beer.getName());
         } catch (EntityNotFoundException e) {
             duplicateExists = false;
         }
         if (duplicateExists) {
             throw new DuplicateEntityException("Beer", "name", beer.getName());
         }
-        repository.create(beer);
+        repository.create(beer, user);
     }
 
     @Override
-    public void update(Beer beer, User user) {
-        if (!user.isAdmin()) {
+    public Beer update(Beer beer, int id, User user) {
+        if (!user.isAdmin() && !repository.get(id).getCreatedBy().equals(user)) {
             throw new UnauthorizedOperationException("Only admins can modify beer.");
         }
         boolean duplicateExists = true;
         try {
-            Beer existingBeer = repository.getByName(beer.getName());
+            Beer existingBeer = repository.get(beer.getName());
             if (existingBeer.getId() == beer.getId()) {
                 duplicateExists = false;
             }
@@ -62,12 +62,12 @@ public class BeerServiceImpl implements BeerService {
         if (duplicateExists) {
             throw new DuplicateEntityException("Beer", "name", beer.getName());
         }
-        repository.update(beer);
+        return repository.update(beer);
     }
 
     @Override
     public void delete(int id, User user) {
-        if (!user.isAdmin()) {
+        if (!user.isAdmin() || !repository.get(id).getCreatedBy().equals(user)) {
             throw new UnauthorizedOperationException("Only admins can delete beer.");
         }
         repository.delete(id);
