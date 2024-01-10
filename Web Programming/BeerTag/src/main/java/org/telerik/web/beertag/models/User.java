@@ -1,7 +1,5 @@
 package org.telerik.web.beertag.models;
 
-import java.util.Objects;
-
 public class User {
     private int id;
     private String username;
@@ -14,9 +12,20 @@ public class User {
     public User() {
     }
 
-    public User(int id, String username, boolean isAdmin) {
+    public User(int id, String username, String password, boolean isAdmin) {
         this.id = id;
         this.username = username;
+        this.password=password;
+        this.isAdmin = isAdmin;
+    }
+
+    public User(int id, String username, String password, String firstName, String lastName, String email, boolean isAdmin) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.isAdmin = isAdmin;
     }
 
@@ -76,15 +85,4 @@ public class User {
         isAdmin = admin;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return id == user.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

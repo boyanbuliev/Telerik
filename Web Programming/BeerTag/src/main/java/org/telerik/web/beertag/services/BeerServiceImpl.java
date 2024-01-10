@@ -22,6 +22,11 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
+    public List<Beer> get() {
+        return repository.get();
+    }
+
+    @Override
     public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortBy, String sortOrder) {
         return repository.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
     }
@@ -29,6 +34,11 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public Beer getById(int id) {
         return repository.get(id);
+    }
+
+    @Override
+    public Beer getByName(String name) {
+        return repository.get(name);
     }
 
     @Override
@@ -42,7 +52,8 @@ public class BeerServiceImpl implements BeerService {
         if (duplicateExists) {
             throw new DuplicateEntityException("Beer", "name", beer.getName());
         }
-        repository.create(beer, user);
+        beer.setCreatedBy(user);
+        repository.create(beer);
     }
 
     @Override
@@ -67,7 +78,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public void delete(int id, User user) {
-        if (!user.isAdmin() || !repository.get(id).getCreatedBy().equals(user)) {
+        if (!user.isAdmin() && !repository.get(id).getCreatedBy().equals(user)) {
             throw new UnauthorizedOperationException("Only admins can delete beer.");
         }
         repository.delete(id);

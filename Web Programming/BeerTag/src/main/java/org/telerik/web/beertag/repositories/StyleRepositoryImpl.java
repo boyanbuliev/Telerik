@@ -1,13 +1,12 @@
 package org.telerik.web.beertag.repositories;
 
-import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.Style;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class StyleRepositoryImpl implements StyleRepository {
     private final List<Style> styles;
 

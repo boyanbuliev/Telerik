@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User create(User user) {
+        return repository.create(user);
+    }
+
+    @Override
     public List<User> getAll() {
         return repository.getAll();
     }
@@ -26,8 +31,10 @@ public class UserServiceImpl implements UserService {
         return repository.getById(id);
     }
 
-    @Override 
+    @Override
     public User getByUsername(String username) {
         return repository.getByUsername(username);
     }
+
+
 }

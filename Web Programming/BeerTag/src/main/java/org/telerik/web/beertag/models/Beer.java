@@ -1,11 +1,9 @@
 package org.telerik.web.beertag.models;
 
-import jakarta.validation.constraints.Positive;
-
 import java.util.Objects;
 
 public class Beer {
-    @Positive(message = "Id should be positive")
+
     private int id;
     private String name;
     private double abv;
@@ -13,6 +11,12 @@ public class Beer {
     private User createdBy;
 
     public Beer() {
+    }
+
+    public Beer(int id, String name, double abv) {
+        this.id = id;
+        this.name = name;
+        this.abv = abv;
     }
 
     public Beer(int id, String name, double abv, Style style, User user) {

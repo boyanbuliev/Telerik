@@ -6,9 +6,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.telerik.web.beertag.exceptions.AuthorizationException;
 import org.telerik.web.beertag.exceptions.DuplicateEntityException;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.exceptions.UnauthorizedOperationException;
+import org.telerik.web.beertag.helpers.AuthenticationHelper;
 import org.telerik.web.beertag.helpers.BeerMapper;
 import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
@@ -36,12 +38,22 @@ public class BeerRestController {
                           @RequestParam(required = false) Double minAbv, @RequestParam(required = false) Integer styleId,
                           @RequestParam(required = false) String sortBy, @RequestParam(required = false) String sortOrder) {
         return service.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
+//        return service.get();
     }
 
     @GetMapping("/{id}")
     public Beer get(@PathVariable int id) {
         try {
             return service.getById(id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @GetMapping("/search")
+    public Beer get(@RequestParam String name) {
+        try {
+            return service.getByName(name);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -56,6 +68,8 @@ public class BeerRestController {
             return beer;
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 
@@ -69,7 +83,7 @@ public class BeerRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
+        } catch (UnauthorizedOperationException | AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
@@ -81,7 +95,7 @@ public class BeerRestController {
             service.delete(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (UnauthorizedOperationException e) {
+        } catch (UnauthorizedOperationException | AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }

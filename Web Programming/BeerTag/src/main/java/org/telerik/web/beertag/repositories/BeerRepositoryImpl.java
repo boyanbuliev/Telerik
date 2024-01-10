@@ -1,10 +1,7 @@
 package org.telerik.web.beertag.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.Beer;
-import org.telerik.web.beertag.models.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,21 +9,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Repository
+//@Repository
 public class BeerRepositoryImpl implements BeerRepository {
 
     private final List<Beer> beers;
-    private final StyleRepository styleRepository;
-    private final UserRepository userRepository;
 
-    @Autowired
+    //    @Autowired
     public BeerRepositoryImpl(StyleRepository styleRepository, UserRepository userRepository) {
-        this.styleRepository = styleRepository;
-        this.userRepository = userRepository;
         beers = new ArrayList<>();
         beers.add(new Beer(1, "Glarus", 4.6, styleRepository.get(1), userRepository.getById(1)));
         beers.add(new Beer(2, "Rhombus Porter", 3.0, styleRepository.get(2), userRepository.getById(2)));
         beers.add(new Beer(3, "Opasen Char", 6.6, styleRepository.get(3), userRepository.getById(3)));
+    }
+
+    @Override
+    public List<Beer> get() {
+        return new ArrayList<>(beers);
     }
 
     @Override
@@ -42,8 +40,7 @@ public class BeerRepositoryImpl implements BeerRepository {
 
     private List<Beer> sortOrder(List<Beer> beers, String sortOrderParam) {
         if (sortOrderParam != null && !sortOrderParam.isEmpty())
-            if (sortOrderParam.equalsIgnoreCase("desc"))
-                Collections.reverse(beers);
+            if (sortOrderParam.equalsIgnoreCase("desc")) Collections.reverse(beers);
         return beers;
     }
 
@@ -91,9 +88,8 @@ public class BeerRepositoryImpl implements BeerRepository {
     }
 
     @Override
-    public void create(Beer beer, User user) {
+    public void create(Beer beer) {
         beer.setId(beers.size() + 1);
-        beer.setCreatedBy(user);
         beers.add(beer);
     }
 

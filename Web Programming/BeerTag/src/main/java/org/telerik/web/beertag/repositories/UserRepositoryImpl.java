@@ -1,21 +1,26 @@
 package org.telerik.web.beertag.repositories;
 
-import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class UserRepositoryImpl implements UserRepository {
     private final List<User> users;
 
     public UserRepositoryImpl() {
         users = new ArrayList<>();
-        users.add(new User(1, "pesho", true));
-        users.add(new User(2, "gosho", false));
-        users.add(new User(3, "ivan", false));
+        users.add(new User(1, "pesho", "1234", true));
+        users.add(new User(2, "gosho", "0000", false));
+        users.add(new User(3, "ivan", "asdf", false));
+    }
+
+    @Override
+    public User create(User user) {
+        users.add(user);
+        return user;
     }
 
     @Override
@@ -36,4 +41,6 @@ public class UserRepositoryImpl implements UserRepository {
                 .filter(u -> u.getUsername().equals(username))
                 .findFirst().orElseThrow(() -> new EntityNotFoundException("User", "username", username));
     }
+
+
 }
