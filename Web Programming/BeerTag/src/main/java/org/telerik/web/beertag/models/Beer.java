@@ -1,14 +1,30 @@
 package org.telerik.web.beertag.models;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "beers")
 public class Beer {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "beer_id")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "abv")
     private double abv;
+    @ManyToOne
+    @JoinColumn(name = "style_id")
     private Style style;
+    //    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "created_by")
     private User createdBy;
+//    @JsonIgnore
+//    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "wishList")
+//    private Set<User> wishedByUsers;
 
     public Beer() {
     }
@@ -24,7 +40,7 @@ public class Beer {
         this.name = name;
         this.abv = abv;
         this.style = style;
-        this.createdBy = user;
+//        this.createdBy = user;
     }
 
     public int getId() {

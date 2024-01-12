@@ -1,13 +1,34 @@
 package org.telerik.web.beertag.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.util.Set;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int id;
+    @Column(name = "username")
     private String username;
+    @JsonIgnore
+    @Column(name = "password")
     private String password;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "email")
     private String email;
+    @Column(name = "is_admin")
     private boolean isAdmin;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_beers", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "beer_id"))
+    private Set<Beer> wishList;
 
     public User() {
     }
@@ -15,7 +36,7 @@ public class User {
     public User(int id, String username, String password, boolean isAdmin) {
         this.id = id;
         this.username = username;
-        this.password=password;
+        this.password = password;
         this.isAdmin = isAdmin;
     }
 
@@ -85,4 +106,11 @@ public class User {
         isAdmin = admin;
     }
 
+    public Set<Beer> getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(Set<Beer> wishList) {
+        this.wishList = wishList;
+    }
 }

@@ -10,6 +10,7 @@ public class BeerDto {
     private String name;
     @Positive(message = "ABV should be positive")
     private double abv;
+    @Positive(message = "StyleId should be positive")
     private int styleId;
 
     public BeerDto(String name, double abv, int styleId) {

@@ -1,30 +1,41 @@
 package org.telerik.web.beertag.repositories;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.Style;
 
-import java.util.ArrayList;
 import java.util.List;
+//import java.util.List;
 
-//@Repository
+@Repository
 public class StyleRepositoryImpl implements StyleRepository {
-    private final List<Style> styles;
+    private final SessionFactory sessionFactory;
 
-    public StyleRepositoryImpl() {
-        styles = new ArrayList<>();
-        styles.add(new Style(1, "Special Ale"));
-        styles.add(new Style(2, "English Porter"));
-        styles.add(new Style(3, "Indian Pale Ale"));
+    @Autowired
+    public StyleRepositoryImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<Style> get() {
-        return new ArrayList<>(styles);
+        try (Session session = sessionFactory.openSession()) {
+            Query<Style> query = session.createQuery("from Style ", Style.class);
+            return query.list();
+        }
     }
 
     @Override
     public Style get(int id) {
-        return styles.stream().filter(s -> s.getId() == id).findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Style", id));
+        try (Session session = sessionFactory.openSession()) {
+            Style style = session.get(Style.class, id);
+            if (style == null) {
+                throw new EntityNotFoundException("Style", id);
+            }
+            return style;
+        }
     }
 }

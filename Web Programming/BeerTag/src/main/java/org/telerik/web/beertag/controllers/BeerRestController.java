@@ -37,8 +37,8 @@ public class BeerRestController {
     public List<Beer> get(@RequestParam(required = false) String name, @RequestParam(required = false) Double maxAbv,
                           @RequestParam(required = false) Double minAbv, @RequestParam(required = false) Integer styleId,
                           @RequestParam(required = false) String sortBy, @RequestParam(required = false) String sortOrder) {
-        return service.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
-//        return service.get();
+//        return service.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
+        return service.get();
     }
 
     @GetMapping("/{id}")

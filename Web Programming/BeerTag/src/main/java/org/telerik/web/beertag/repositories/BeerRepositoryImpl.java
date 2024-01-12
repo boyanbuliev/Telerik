@@ -1,35 +1,96 @@
 package org.telerik.web.beertag.repositories;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.Beer;
+import org.telerik.web.beertag.models.User;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Repository
+@Repository
 public class BeerRepositoryImpl implements BeerRepository {
+    private final StyleRepository styleRepository;
+    private final UserRepository userRepository;
+    private final SessionFactory sessionFactory;
 
-    private final List<Beer> beers;
-
-    //    @Autowired
-    public BeerRepositoryImpl(StyleRepository styleRepository, UserRepository userRepository) {
-        beers = new ArrayList<>();
-        beers.add(new Beer(1, "Glarus", 4.6, styleRepository.get(1), userRepository.getById(1)));
-        beers.add(new Beer(2, "Rhombus Porter", 3.0, styleRepository.get(2), userRepository.getById(2)));
-        beers.add(new Beer(3, "Opasen Char", 6.6, styleRepository.get(3), userRepository.getById(3)));
+    @Autowired
+    public BeerRepositoryImpl(StyleRepository styleRepository, UserRepository userRepository, SessionFactory sessionFactory) {
+        this.styleRepository = styleRepository;
+        this.userRepository = userRepository;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<Beer> get() {
-        return new ArrayList<>(beers);
+        try (Session session = sessionFactory.openSession()) {
+            Query<Beer> query = session.createQuery("from Beer", Beer.class);
+            return query.list();
+        }
     }
 
     @Override
-    public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortParam, String sortOrderParam) {
-        List<Beer> result = new ArrayList<>(beers);
+    public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortBy, String sortOrder) {
+        return filterBeers(name, maxAbv, minAbv, styleId, sortBy, sortOrder, get());
+    }
+
+    @Override
+    public Beer get(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Beer beer = session.get(Beer.class, id);
+            if (beer == null) {
+                throw new EntityNotFoundException("Beer", id);
+            }
+            return beer;
+        }
+    }
+
+    @Override
+    public Beer get(String name) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Beer> query = session.createQuery("from Beer where name = :name", Beer.class);
+            query.setParameter("name", name);
+            List<Beer> result = query.list();
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException("Beer", "name", name);
+            }
+            return result.get(0);
+        }
+    }
+
+    @Override
+    public void create(Beer beer) {
+        try (Session session = sessionFactory.openSession()) {
+            session.save(beer);
+        }
+    }
+
+    @Override
+    public Beer update(Beer beer) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.update(beer);
+            session.getTransaction().commit();
+            return get(beer.getId());
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.delete(session.load(User.class, id));
+            session.getTransaction().commit();
+        }
+    }
+
+    private List<Beer> filterBeers(String name, Double maxAbv, Double minAbv, Integer styleId, String sortParam, String sortOrderParam, List<Beer> result) {
         result = filterByName(result, name);
         result = filterByAbv(result, maxAbv, minAbv);
         result = filterByStyle(result, styleId);
@@ -75,35 +136,5 @@ public class BeerRepositoryImpl implements BeerRepository {
         if (name != null && !name.isEmpty())
             beers = beers.stream().filter(b -> b.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
         return beers;
-    }
-
-    @Override
-    public Beer get(int id) {
-        return beers.stream().filter(b -> b.getId() == id).findFirst().orElseThrow(() -> new EntityNotFoundException("Beer", id));
-    }
-
-    @Override
-    public Beer get(String name) {
-        return beers.stream().filter(b -> b.getName().equals(name)).findFirst().orElseThrow(() -> new EntityNotFoundException("Beer", "name", name));
-    }
-
-    @Override
-    public void create(Beer beer) {
-        beer.setId(beers.size() + 1);
-        beers.add(beer);
-    }
-
-    @Override
-    public Beer update(Beer beer) {
-        Beer beerToUpdate = get(beer.getId());
-        beerToUpdate.setName(beer.getName());
-        beerToUpdate.setAbv(beer.getAbv());
-        beerToUpdate.setStyle(beer.getStyle());
-        return beerToUpdate;
-    }
-
-    @Override
-    public void delete(int id) {
-        beers.remove(get(id));
     }
 }

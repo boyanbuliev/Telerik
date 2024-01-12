@@ -1,9 +1,15 @@
 package org.telerik.web.beertag.models;
 
-import java.util.Objects;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "styles")
 public class Style {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "style_id")
     private int id;
+    @Column(name = "name")
     private String name;
 
     public Style() {
@@ -28,17 +34,5 @@ public class Style {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Style style)) return false;
-        return getId() == style.getId() && Objects.equals(getName(), style.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName());
     }
 }

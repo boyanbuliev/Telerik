@@ -2,6 +2,7 @@ package org.telerik.web.beertag.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.repositories.UserRepository;
 
@@ -10,15 +11,12 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final BeerService beerService;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, BeerService beerService) {
         this.repository = repository;
-    }
-
-    @Override
-    public User create(User user) {
-        return repository.create(user);
+        this.beerService = beerService;
     }
 
     @Override
@@ -36,5 +34,16 @@ public class UserServiceImpl implements UserService {
         return repository.getByUsername(username);
     }
 
+    @Override
+    public void addToWishList(int userId, int beerId) {
+        Beer beer= beerService.getById(beerId);
+        repository.addToWishList(userId, beer);
+    }
+
+    @Override
+    public void deleteFromWishList(int userId, int beerId) {
+        Beer beer= beerService.getById(beerId);
+        repository.deleteFromWishList(userId, beer);
+    }
 
 }

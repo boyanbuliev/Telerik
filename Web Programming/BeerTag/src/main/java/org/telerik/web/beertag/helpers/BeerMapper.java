@@ -13,7 +13,6 @@ public class BeerMapper {
     @Autowired
     public BeerMapper(StyleService service) {
         this.service = service;
-
     }
 
     public Beer fromDto(BeerDto beerDto, int beerId) {

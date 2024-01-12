@@ -1,46 +1,79 @@
 package org.telerik.web.beertag.repositories;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
+import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
-//@Repository
+@Repository
 public class UserRepositoryImpl implements UserRepository {
-    private final List<User> users;
+    private final SessionFactory sessionFactory;
 
-    public UserRepositoryImpl() {
-        users = new ArrayList<>();
-        users.add(new User(1, "pesho", "1234", true));
-        users.add(new User(2, "gosho", "0000", false));
-        users.add(new User(3, "ivan", "asdf", false));
-    }
+    @Autowired
+    public UserRepositoryImpl(SessionFactory sessionFactory) {
 
-    @Override
-    public User create(User user) {
-        users.add(user);
-        return user;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<User> getAll() {
-        return new ArrayList<>(users);
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from User", User.class).list();
+        }
     }
 
     @Override
     public User getById(int id) {
-        return getAll().stream()
-                .filter(u -> u.getId() == id)
-                .findFirst().orElseThrow(() -> new EntityNotFoundException("User", id));
+        try (Session session = sessionFactory.openSession()) {
+            User user = session.get(User.class, id);
+            if (user == null) {
+                throw new EntityNotFoundException("User", id);
+            }
+            return user;
+        }
     }
 
     @Override
     public User getByUsername(String username) {
-        return getAll().stream()
-                .filter(u -> u.getUsername().equals(username))
-                .findFirst().orElseThrow(() -> new EntityNotFoundException("User", "username", username));
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where username = :username", User.class);
+            query.setParameter("username", username);
+            List<User> result = query.list();
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException("User", "username", username);
+            }
+            return result.get(0);
+        }
     }
 
+    @Override
+    public void addToWishList(int userId, Beer beer) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            User user = session.load(User.class, userId);
+            user.getWishList().add(beer);
+            session.update(user);
+            session.getTransaction().commit();
+        }
+    }
 
+    @Override
+    public void deleteFromWishList(int userId, Beer beer) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            User user = session.load(User.class, userId);
+            if (!user.getWishList().contains(beer)) {
+                throw new EntityNotFoundException("Beer", beer.getId());
+            }
+            user.getWishList().remove(beer);
+            session.update(user);
+            session.getTransaction().commit();
+        }
+    }
 }

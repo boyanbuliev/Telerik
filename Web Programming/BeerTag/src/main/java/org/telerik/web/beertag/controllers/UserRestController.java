@@ -1,14 +1,15 @@
 package org.telerik.web.beertag.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
+import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,12 +45,26 @@ public class UserRestController {
         }
     }
 
-    @PostMapping
-    public User create(@Valid @RequestBody User user) {
+    @GetMapping("/{id}/wish-list")
+    public List<Beer> getWishList(@PathVariable int id) {
         try {
-            return service.create(user);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        return new ArrayList<>(service.getById(id).getWishList());
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/{user}/wish-list/{beer}")
+    public void addToWishList(@PathVariable("user") int userId, @PathVariable("beer") int beerId) {
+        service.addToWishList(userId, beerId);
+    }
+
+    @DeleteMapping("/{user}/wish-list/{beer}")
+    public void deleteFromWishList(@PathVariable("user") int userId, @PathVariable("beer") int beerId) {
+        try {
+            service.deleteFromWishList(userId, beerId);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
