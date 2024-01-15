@@ -16,14 +16,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class BeerRepositoryImpl implements BeerRepository {
-    private final StyleRepository styleRepository;
-    private final UserRepository userRepository;
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public BeerRepositoryImpl(StyleRepository styleRepository, UserRepository userRepository, SessionFactory sessionFactory) {
-        this.styleRepository = styleRepository;
-        this.userRepository = userRepository;
+    public BeerRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -67,7 +63,9 @@ public class BeerRepositoryImpl implements BeerRepository {
     @Override
     public void create(Beer beer) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(beer);
+            session.beginTransaction();
+            session.persist(beer);
+            session.getTransaction().commit();
         }
     }
 
@@ -75,9 +73,9 @@ public class BeerRepositoryImpl implements BeerRepository {
     public Beer update(Beer beer) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.update(beer);
+            session.merge(beer);
             session.getTransaction().commit();
-            return get(beer.getId());
+            return beer;
         }
     }
 
@@ -85,7 +83,7 @@ public class BeerRepositoryImpl implements BeerRepository {
     public void delete(int id) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(session.load(User.class, id));
+            session.remove(session.get(User.class, id));
             session.getTransaction().commit();
         }
     }

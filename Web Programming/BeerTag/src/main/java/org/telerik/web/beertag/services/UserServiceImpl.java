@@ -6,44 +6,53 @@ import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final BeerService beerService;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, BeerService beerService) {
-        this.repository = repository;
+    public UserServiceImpl(UserRepository userRepository, BeerService beerService) {
+        this.userRepository = userRepository;
         this.beerService = beerService;
     }
 
     @Override
     public List<User> getAll() {
-        return repository.getAll();
+        return userRepository.getAll();
     }
 
     @Override
     public User getById(int id) {
-        return repository.getById(id);
+        return userRepository.getById(id);
     }
 
     @Override
     public User getByUsername(String username) {
-        return repository.getByUsername(username);
+        return userRepository.getByUsername(username);
     }
 
     @Override
-    public void addToWishList(int userId, int beerId) {
-        Beer beer= beerService.getById(beerId);
-        repository.addToWishList(userId, beer);
+    public List<Beer> addToWishList(int userId, int beerId) {
+        User user = userRepository.getById(userId);
+        Beer beer = beerService.getById(beerId);
+        if (user.getWishList().add(beer)) {
+            userRepository.update(user);
+        }
+        return new ArrayList<>(user.getWishList());
     }
 
     @Override
-    public void deleteFromWishList(int userId, int beerId) {
-        Beer beer= beerService.getById(beerId);
-        repository.deleteFromWishList(userId, beer);
+    public List<Beer> deleteFromWishList(int userId, int beerId) {
+        User user = userRepository.getById(userId);
+        Beer beer = beerService.getById(beerId);
+        if (user.getWishList().remove(beer)) {
+            userRepository.update(user);
+        }
+        return new ArrayList<>(user.getWishList());
     }
 
 }

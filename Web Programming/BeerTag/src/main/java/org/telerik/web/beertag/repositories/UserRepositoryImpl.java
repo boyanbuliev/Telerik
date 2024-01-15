@@ -53,12 +53,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void update(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+    }
+
+    @Override
     public void addToWishList(int userId, Beer beer) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            User user = session.load(User.class, userId);
+            User user = session.get(User.class, userId);
             user.getWishList().add(beer);
-            session.update(user);
+            session.merge(user);
             session.getTransaction().commit();
         }
     }
@@ -67,12 +76,12 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteFromWishList(int userId, Beer beer) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            User user = session.load(User.class, userId);
+            User user = session.get(User.class, userId);
             if (!user.getWishList().contains(beer)) {
                 throw new EntityNotFoundException("Beer", beer.getId());
             }
             user.getWishList().remove(beer);
-            session.update(user);
+            session.merge(user);
             session.getTransaction().commit();
         }
     }

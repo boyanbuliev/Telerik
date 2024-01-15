@@ -29,7 +29,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_beers", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "beer_id"))
     private Set<Beer> wishList;
-
     public User() {
     }
 

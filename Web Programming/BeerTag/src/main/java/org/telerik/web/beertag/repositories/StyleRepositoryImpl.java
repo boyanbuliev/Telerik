@@ -2,7 +2,6 @@ package org.telerik.web.beertag.repositories;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
@@ -23,8 +22,7 @@ public class StyleRepositoryImpl implements StyleRepository {
     @Override
     public List<Style> get() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Style> query = session.createQuery("from Style ", Style.class);
-            return query.list();
+            return session.createQuery("from Style ", Style.class).list();
         }
     }
 

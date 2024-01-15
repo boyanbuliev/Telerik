@@ -38,6 +38,11 @@ public class UserRepositoryOldImpl implements UserRepository {
     }
 
     @Override
+    public void update(User user) {
+
+    }
+
+    @Override
     public void addToWishList(int userId, Beer beer) {
 
     }

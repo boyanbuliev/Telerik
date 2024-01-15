@@ -1,5 +1,6 @@
 package org.telerik.web.beertag.services;
 
+import org.telerik.web.beertag.models.Beer;
 import org.telerik.web.beertag.models.User;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface UserService {
 
     User getByUsername(String username);
 
-    void addToWishList(int userId, int beerId);
+    List<Beer> addToWishList(int userId, int beerId);
 
-    void deleteFromWishList(int userId, int beerId);
+    List<Beer> deleteFromWishList(int userId, int beerId);
 }

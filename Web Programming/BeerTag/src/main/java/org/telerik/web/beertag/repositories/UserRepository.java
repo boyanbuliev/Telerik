@@ -13,6 +13,8 @@ public interface UserRepository {
 
     User getByUsername(String username);
 
+    void update(User user);
+
     void addToWishList(int userId, Beer beer);
 
     void deleteFromWishList(int userId, Beer beer);
