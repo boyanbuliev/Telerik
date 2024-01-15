@@ -6,6 +6,7 @@ import org.telerik.web.beertag.exceptions.DuplicateEntityException;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.exceptions.UnauthorizedOperationException;
 import org.telerik.web.beertag.models.Beer;
+import org.telerik.web.beertag.models.FilterOptions;
 import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.repositories.BeerRepository;
 
@@ -22,13 +23,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<Beer> get() {
-        return repository.get();
-    }
-
-    @Override
-    public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortBy, String sortOrder) {
-        return repository.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
+    public List<Beer> get(FilterOptions filterOptions) {
+        return repository.get(filterOptions);
     }
 
     @Override

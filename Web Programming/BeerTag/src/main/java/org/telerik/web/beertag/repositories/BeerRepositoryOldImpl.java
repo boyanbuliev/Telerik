@@ -2,6 +2,7 @@ package org.telerik.web.beertag.repositories;
 
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.Beer;
+import org.telerik.web.beertag.models.FilterOptions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,14 +24,9 @@ public class BeerRepositoryOldImpl implements BeerRepository {
     }
 
     @Override
-    public List<Beer> get() {
-        return new ArrayList<>(beers);
-    }
-
-    @Override
-    public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortParam, String sortOrderParam) {
+    public List<Beer> get(FilterOptions filterOptions) {
         List<Beer> result = new ArrayList<>(beers);
-        result = filterBeers(name, maxAbv, minAbv, styleId, sortParam, sortOrderParam, result);
+//        result = filterBeers(name, maxAbv, minAbv, styleId, sortParam, sortOrderParam, result);
         return result;
     }
 

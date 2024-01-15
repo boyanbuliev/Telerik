@@ -13,6 +13,7 @@ import org.telerik.web.beertag.exceptions.UnauthorizedOperationException;
 import org.telerik.web.beertag.helpers.AuthenticationHelper;
 import org.telerik.web.beertag.helpers.BeerMapper;
 import org.telerik.web.beertag.models.Beer;
+import org.telerik.web.beertag.models.FilterOptions;
 import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.models.dtos.BeerDto;
 import org.telerik.web.beertag.services.BeerService;
@@ -37,7 +38,8 @@ public class BeerRestController {
     public List<Beer> get(@RequestParam(required = false) String name, @RequestParam(required = false) Double maxAbv,
                           @RequestParam(required = false) Double minAbv, @RequestParam(required = false) Integer styleId,
                           @RequestParam(required = false) String sortBy, @RequestParam(required = false) String sortOrder) {
-        return service.get(name, maxAbv, minAbv, styleId, sortBy, sortOrder);
+        FilterOptions filterOptions = new FilterOptions(name, minAbv, maxAbv, styleId, sortBy, sortOrder);
+        return service.get(filterOptions);
     }
 
     @GetMapping("/{id}")

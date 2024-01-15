@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.telerik.web.beertag.exceptions.EntityNotFoundException;
 import org.telerik.web.beertag.models.Beer;
+import org.telerik.web.beertag.models.FilterOptions;
 import org.telerik.web.beertag.models.User;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -24,16 +23,57 @@ public class BeerRepositoryImpl implements BeerRepository {
     }
 
     @Override
-    public List<Beer> get() {
+    public List<Beer> get(FilterOptions filterOptions) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Beer> query = session.createQuery("from Beer", Beer.class);
+            StringBuilder queryStr = new StringBuilder("from Beer");
+            ArrayList<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterOptions.getName().ifPresent(value -> {
+                filters.add(" name like: beerName ");
+                params.put("beerName", String.format("%%%s%%", value));
+            });
+            filterOptions.getMinAbv().ifPresent(value -> {
+                filters.add(" abv >= :minAbv ");
+                params.put("minAbv", value);
+            });
+            filterOptions.getMaxAbv().ifPresent(value -> {
+                filters.add(" abv <= :maxAbv ");
+                params.put("maxAbv", value);
+            });
+            filterOptions.getStyleId().ifPresent(value -> {
+                filters.add(" style.id = :styleId ");
+                params.put("styleId", value);
+            });
+
+            if (!filters.isEmpty())
+                queryStr.append(" where ").append(String.join(" and", filters));
+            queryStr.append(generateOrderBy(filterOptions));
+            Query<Beer> query = session.createQuery(queryStr.toString(), Beer.class);
+            query.setProperties(params);
             return query.list();
         }
     }
 
-    @Override
-    public List<Beer> get(String name, Double maxAbv, Double minAbv, Integer styleId, String sortBy, String sortOrder) {
-        return filterBeers(name, maxAbv, minAbv, styleId, sortBy, sortOrder, get());
+    private String generateOrderBy(FilterOptions filterOptions) {
+        if (filterOptions.getSortBy().isEmpty())
+            return "";
+        String orderBy = "";
+        switch (filterOptions.getSortBy().get()) {
+            case "name":
+                orderBy = "name";
+                break;
+            case "abv":
+                orderBy = "abv";
+                break;
+            case "style":
+                orderBy = "style.id";
+                break;
+        }
+        orderBy = String.format(" order by %s", orderBy);
+        if (filterOptions.getSortOrder().isPresent() && filterOptions.getSortOrder().get().equals("desc"))
+            orderBy = String.format("%s desc", orderBy);
+        return orderBy;
     }
 
     @Override
@@ -88,7 +128,8 @@ public class BeerRepositoryImpl implements BeerRepository {
         }
     }
 
-    private List<Beer> filterBeers(String name, Double maxAbv, Double minAbv, Integer styleId, String sortParam, String sortOrderParam, List<Beer> result) {
+    private List<Beer> filterBeers(String name, Double maxAbv, Double minAbv, Integer styleId, String
+            sortParam, String sortOrderParam, List<Beer> result) {
         result = filterByName(result, name);
         result = filterByAbv(result, maxAbv, minAbv);
         result = filterByStyle(result, styleId);
