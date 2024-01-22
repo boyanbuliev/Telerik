@@ -81,7 +81,7 @@ public class BeerRestController {
         try {
             User user = helper.tryGetUser(headers);
             Beer beer = mapper.fromDto(beerDto, id);
-            return service.update(beer, id, user);
+            return service.update(beer, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (DuplicateEntityException e) {

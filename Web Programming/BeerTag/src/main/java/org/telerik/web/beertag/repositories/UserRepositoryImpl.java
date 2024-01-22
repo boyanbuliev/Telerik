@@ -17,7 +17,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Autowired
     public UserRepositoryImpl(SessionFactory sessionFactory) {
-
         this.sessionFactory = sessionFactory;
     }
 

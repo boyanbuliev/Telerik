@@ -358,7 +358,7 @@ public class BeerControllerTests {
 
         Mockito.doThrow(DuplicateEntityException.class)
                 .when(mockService)
-                .update(Mockito.any(Beer.class), Mockito.anyInt(), Mockito.any(User.class));
+                .update(Mockito.any(Beer.class), Mockito.any(User.class));
 
         // Act, Assert
         String body = toJson(createBeerDto());
@@ -383,7 +383,7 @@ public class BeerControllerTests {
 
         Mockito.doThrow(AuthorizationException.class)
                 .when(mockService)
-                .update(mockBeer, 1, mockUser);
+                .update(mockBeer, mockUser);
 
         // Act, Assert
         String body = toJson(createBeerDto());

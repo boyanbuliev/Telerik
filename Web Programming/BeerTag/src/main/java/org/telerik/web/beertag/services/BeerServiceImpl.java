@@ -53,8 +53,8 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public Beer update(Beer beer, int id, User user) {
-        if (!user.isAdmin() && !repository.get(id).getCreatedBy().equals(user)) {
+    public Beer update(Beer beer, User user) {
+        if (!user.isAdmin() && !repository.get(beer.getId()).getCreatedBy().equals(user)) {
             throw new UnauthorizedOperationException("Only admins can modify beer.");
         }
         boolean duplicateExists = true;

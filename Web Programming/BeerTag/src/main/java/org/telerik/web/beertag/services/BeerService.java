@@ -12,11 +12,11 @@ public interface BeerService {
 
     Beer getById(int id);
 
-   Beer getByName(String name);
+    Beer getByName(String name);
 
     void create(Beer beer, User user);
 
-    Beer update(Beer beer, int id, User user);
+    Beer update(Beer beer, User user);
 
     void delete(int id, User user);
 }

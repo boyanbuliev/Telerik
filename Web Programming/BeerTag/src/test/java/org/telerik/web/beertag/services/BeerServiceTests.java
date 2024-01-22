@@ -15,8 +15,6 @@ import org.telerik.web.beertag.models.FilterOptions;
 import org.telerik.web.beertag.models.User;
 import org.telerik.web.beertag.repositories.BeerRepository;
 
-import java.util.List;
-
 import static org.telerik.web.beertag.Helpers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,19 +26,14 @@ public class BeerServiceTests {
 
     @Test
     public void get_Should_ReturnListOfBeers_When_Exists() {
-        FilterOptions mockFilterOptions = createMockFilterOptions();
-        Beer mockBeer1 = createMockBeer();
-        mockBeer1.setName("MockBeer1");
-        Beer mockBeer2 = createMockBeer();
-        mockBeer2.setName("MockBeer2");
-        Beer mockBeer3 = createMockBeer();
-        mockBeer2.setName("MockBeer3");
+    FilterOptions mockFilterOptions = createMockFilterOptions();
 
-        Mockito.when(mockRepository.get(mockFilterOptions)).thenReturn(List.of(mockBeer1, mockBeer2, mockBeer3));
-        Assertions.assertEquals(List.of(mockBeer1, mockBeer2, mockBeer3), service.get(mockFilterOptions));
-    }
+        service.get(mockFilterOptions);
 
-    @Test
+        Mockito.verify(mockRepository, Mockito.times(1)).get(mockFilterOptions);
+}
+
+@Test
     public void getById_Should_ReturnBeer_When_MatchExists() {
         Mockito.when(mockRepository.get(2)).thenReturn(new Beer(2, "MockBeerName", 1.3));
 
@@ -69,27 +62,37 @@ public class BeerServiceTests {
         Mockito.when(mockRepository.get(mockBeer.getName())).thenReturn(mockBeer);
 
         Assertions.assertThrows(DuplicateEntityException.class, () -> service.create(mockBeer, mockUser));
-
     }
 
     @Test
-    public void create_Should_CallRepository_WhenBeerWithSameNameExists() {
+    public void create_Should_CallRepository_When_BeerNameIsUnique() {
         Beer mockBeer = createMockBeer();
         User mockUser = createMockUser();
-        Mockito.when(mockRepository.get(mockBeer.getName())).thenThrow(new EntityNotFoundException("Beer", "name", mockBeer.getName()));
+        Mockito.when(mockRepository.get(mockBeer.getName())).thenThrow(EntityNotFoundException.class);
 
         service.create(mockBeer, mockUser);
 
-        Mockito.verify(mockRepository, Mockito.times(1)).create(Mockito.any(Beer.class));
+        Mockito.verify(mockRepository, Mockito.times(1)).create(mockBeer);
     }
 
     @Test
     public void update_Should_Throw_When_UserIsNotCreatorOrAdmin() {
         Beer mockBeer = createMockBeer();
         User mockUser = createMockUser();
-        mockUser.setUsername("MockUser2");
+        mockUser.setId(2);
         Mockito.when(mockRepository.get(Mockito.anyInt())).thenReturn(mockBeer);
-        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockBeer, 1, mockUser));
+        Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.update(mockBeer, mockUser));
+    }
+
+    @Test
+    public void update_Should_CallRepository_When_NameIsUniqueAndUserIsAuthorized() {
+        Beer mockBeer = createMockBeer();
+        Beer anotherMockBeer = createMockBeer();
+        anotherMockBeer.setId(2);
+        Mockito.when(mockRepository.get(1)).thenReturn(mockBeer);
+        Mockito.when(mockRepository.get(anotherMockBeer.getName())).thenThrow(EntityNotFoundException.class);
+        service.update(mockBeer, createMockUser());
+        Mockito.verify(mockRepository, Mockito.times(1)).update(mockBeer);
     }
 
     @Test
@@ -99,14 +102,14 @@ public class BeerServiceTests {
         anotherMockBeer.setId(2);
         Mockito.when(mockRepository.get(Mockito.anyInt())).thenReturn(mockBeer);
         Mockito.when(mockRepository.get(Mockito.anyString())).thenReturn(anotherMockBeer);
-        Assertions.assertThrows(DuplicateEntityException.class, () -> service.update(mockBeer, 2, mockBeer.getCreatedBy()));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> service.update(mockBeer, mockBeer.getCreatedBy()));
     }
 
     @Test
     public void delete_Should_Throw_When_UserIsNotCreatorOrAdmin() {
         Beer mockBeer = createMockBeer();
         User mockUser = createMockUser();
-        mockUser.setUsername("MockUser2");
+        mockUser.setId(2);
         Mockito.when(mockRepository.get(Mockito.anyInt())).thenReturn(mockBeer);
         Assertions.assertThrows(UnauthorizedOperationException.class, () -> service.delete(1, mockUser));
     }
